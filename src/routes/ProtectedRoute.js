@@ -6,7 +6,7 @@ const ProtectedRoute = ({ isAuth: isAuth, component: Component, ...rest }) => {
         <Route
             {...rest}
             render={({ location }) => {
-                return isAuth ? (
+                return isAuth !== null ? (
                     <Component />
                 ) : (
                     <Redirect
