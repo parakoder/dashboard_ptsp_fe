@@ -7,6 +7,7 @@
 
     .content-dashboard {
         height: calc(100% - 75px);
+        background-color: #f5f5f5;
 
         .grid-card {
             display: flex;
@@ -30,40 +31,22 @@
             }
 
             .desc-card-dashboard {
-                font-size: 30px;
+                font-size: 48px;
                 font-weight: bold;
             }
         }
 
         .logo-text {
-            width: 66%;
+            width: 66.6%;
             display: flex;
             flex-direction: row;
             justify-content: center;
             align-items: center;
 
             .logo-img {
-                width: 100px;
-                height: 120px;
-            }
-
-            .t1 {
-                color: $red;
-                font-size: 26px;
-                font-weight: bold;
-                text-align: center;
-            }
-            .t2 {
-                color: $primaryDark;
-                font-size: 26px;
-                font-weight: bold;
-                text-align: center;
-            }
-            .t3 {
-                color: $primaryDark;
-                font-size: 26px;
-                font-weight: 500;
-                text-align: center;
+                width: 80px;
+                height: 100px;
+                margin-right: 30px;
             }
         }
     }
@@ -81,5 +64,11 @@
         justify-content: center;
         align-items: center;
         font-size: 20px;
+        font-weight: 600;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        text-align: center;
     }
 }

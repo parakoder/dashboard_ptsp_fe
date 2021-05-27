@@ -1,0 +1,147 @@
+@import '../../styles/colors.scss';
+
+.container-auth {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+
+    .auth-logo {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        // border: 1px solid black;
+        background-image: url('../../assets/bg_auth.png');
+        background-size: cover;
+
+        .img-logo {
+            width: 157px;
+            height: 200px;
+        }
+
+        .auth-logo-text {
+            text-align: center;
+        }
+    }
+
+    .auth-form {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .title-auth-form {
+            font-family: Montserrat;
+            font-size: 22px;
+            font-weight: bold;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: left;
+            color: #000000;
+        }
+
+        .subtitle-auth-form {
+            font-family: Montserrat;
+            font-size: 14px;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.79;
+            letter-spacing: normal;
+            text-align: left;
+            color: #000000;
+        }
+
+        .input-form {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            // width: 100%;
+            height: 45px;
+            flex-grow: 0;
+            margin: 10px 0 0;
+            padding: 10px 20px;
+            object-fit: contain;
+            border-radius: 5px;
+            border: solid 1px $primarySoft;
+            background-color: #fafafa;
+            font-size: 20px;
+
+            .input-form-body {
+                display: flex;
+                flex: 1;
+                border: none;
+                outline: none;
+                background-color: #fafafa;
+                height: 100%;
+                font-size: 18px;
+            }
+        }
+
+        .input-title-wrapper {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .input-title {
+            font-family: Montserrat;
+            font-size: 16px;
+            font-weight: 500;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: left;
+            color: #000000;
+        }
+
+        .input-txt-error {
+            font-family: Montserrat;
+            font-size: 16px;
+            font-weight: 500;
+            font-stretch: normal;
+            font-style: italic;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: left;
+            color: #000000;
+        }
+
+        .txt-problem-login {
+            font-family: Montserrat;
+            font-size: 14px;
+            font-weight: 500;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.79;
+            letter-spacing: normal;
+            text-align: center;
+            color: $primarySoft;
+            cursor: pointer;
+        }
+
+        .btn-back {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-bottom: 50px;
+            cursor: pointer;
+
+            .txt-btn-back {
+                font-size: 18px;
+                font-weight: 500;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: normal;
+                letter-spacing: normal;
+                text-align: left;
+                color: $primaryDark;
+            }
+        }
+    }
+}
