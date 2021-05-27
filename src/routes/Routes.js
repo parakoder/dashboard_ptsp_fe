@@ -19,14 +19,13 @@ const Routes = () => {
             <Route path='/' exact>
                 <Auth />
             </Route>
-            <Link to='/admin'>Go to admin</Link>
+            {/* <Link to='/admin'>Go to admin</Link> */}
             <Route path='/dashboard' exact component={Dashboard} />
             <ProtectedRoute
                 path='/admin'
                 component={Admin}
                 isAuth={lclStorage}
             />
-            )
         </>
     );
 };

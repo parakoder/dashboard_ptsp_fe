@@ -1,0 +1,17 @@
+@mixin card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border-radius: 8px;
+    -moz-box-shadow: 5px 5px 15px 5px rgba(153, 153, 153, 0.5);
+    -webkit-box-shadow: 5px 5px 15px 5px rgba(153, 153, 153, 0.5);
+    box-shadow: 5px 5px 15px 5px rgba(153, 153, 153, 0.5);
+}
+
+.card-dashboard {
+    @include card();
+    flex-direction: column;
+    width: 90%;
+    height: 65%;
+}
