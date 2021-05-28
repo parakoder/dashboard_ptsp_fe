@@ -15,7 +15,7 @@ const Auth = () => {
     const { authContext } = fun;
 
     const [showHidePass, setShowHidePass] = useState(true);
-    const [pageAuth, setPageAuth] = useState('forgot');
+    const [pageAuth, setPageAuth] = useState('login');
 
     const [form, setForm] = useState({
         username: '',
