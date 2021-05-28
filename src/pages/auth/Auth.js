@@ -17,6 +17,36 @@ const Auth = () => {
     const [showHidePass, setShowHidePass] = useState(true);
     const [pageAuth, setPageAuth] = useState('forgot');
 
+    const [form, setForm] = useState({
+        username: '',
+        password: '',
+    });
+
+    const [errorUsername, setErrorUsername] = useState({
+        isError: false,
+        text: '',
+    });
+    const [errorPassword, setErrorPassword] = useState({
+        isError: false,
+        text: '',
+    });
+
+    const loginHandler = () => {
+        if (form.username === '') {
+            setErrorUsername({
+                isError: true,
+                text: 'Username tidak boleh kosong',
+            });
+        }
+
+        if (form.password === '') {
+            setErrorPassword({
+                isError: true,
+                text: 'Password tidak boleh kosong',
+            });
+        }
+    };
+
     return (
         <div className='container-auth'>
             <div className='auth-logo'>
@@ -44,27 +74,69 @@ const Auth = () => {
                         <div style={{ height: 30 }} />
                         <div className='input-title-wrapper'>
                             <div className='input-title'>ID</div>
-                            <div className='input-txt-error'>
-                                NIK / ID yang anda masukkan salah
-                            </div>
+                            {errorUsername.isError ? (
+                                <div className='input-txt-error'>
+                                    {errorUsername.text}
+                                </div>
+                            ) : null}
                         </div>
-                        <div className='input-form'>
+                        <div
+                            className={
+                                errorUsername.isError
+                                    ? 'input-form-error'
+                                    : 'input-form'
+                            }
+                        >
                             <input
                                 placeholder='Masukkan NIK atau ID'
                                 className='input-form-body'
+                                value={form.username}
+                                onChange={(e) => {
+                                    if (e.target.value.length > 0) {
+                                        setErrorUsername({
+                                            isError: false,
+                                            text: '',
+                                        });
+                                    }
+                                    setForm({
+                                        ...form,
+                                        username: e.target.value,
+                                    });
+                                }}
                             />
                         </div>
                         <div style={{ height: 30 }} />
                         <div className='input-title-wrapper'>
                             <div className='input-title'>Kata Sandi</div>
-                            <div className='input-txt-error'>
-                                Kata Sandi yang anda masukkan salah
-                            </div>
+                            {errorPassword.isError ? (
+                                <div className='input-txt-error'>
+                                    {errorPassword.text}
+                                </div>
+                            ) : null}
                         </div>
-                        <div className='input-form'>
+                        <div
+                            className={
+                                errorPassword.isError
+                                    ? 'input-form-error'
+                                    : 'input-form'
+                            }
+                        >
                             <input
                                 placeholder='Masukkan Kata Sandi'
                                 className='input-form-body'
+                                value={form.password}
+                                onChange={(e) => {
+                                    if (e.target.value.length > 0) {
+                                        setErrorPassword({
+                                            isError: false,
+                                            text: '',
+                                        });
+                                    }
+                                    setForm({
+                                        ...form,
+                                        password: e.target.value,
+                                    });
+                                }}
                                 type={showHidePass ? 'password' : 'text'}
                             />
                             {showHidePass ? (
@@ -86,10 +158,7 @@ const Auth = () => {
                             )}
                         </div>
                         <div style={{ height: 50 }} />
-                        <Button
-                            className='button-login'
-                            onClick={() => alert('Masuk')}
-                        >
+                        <Button className='button-login' onClick={loginHandler}>
                             Masuk
                         </Button>
                         <div style={{ height: 30 }} />
