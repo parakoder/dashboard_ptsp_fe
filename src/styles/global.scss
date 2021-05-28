@@ -136,6 +136,22 @@
     cursor: pointer;
 }
 
+.button-yes-red {
+    background-color: $errorColor;
+    border-radius: 5px;
+    // border: 1px solid $errorColor;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.button-cancel-white {
+    color: black;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
 .flexrow {
     display: flex;
     flex-direction: row;
@@ -147,4 +163,18 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+}
+
+.flexrowaround {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.flexrowevenly {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
 }

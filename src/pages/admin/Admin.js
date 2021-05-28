@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { withRouter } from 'react-router-dom';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
@@ -16,6 +16,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Dialog from '@material-ui/core/Dialog';
 import './admin.scss';
 
 const StyledTableCell = withStyles((theme) => ({
@@ -80,6 +81,16 @@ const Admin = () => {
     const { state, fun } = useContext(AppContext);
     const { authContext } = fun;
 
+    const [showModalLogout, setShowModalLogout] = useState(false);
+
+    const handleClickOpen = () => {
+        setShowModalLogout(true);
+    };
+
+    const handleClose = () => {
+        setShowModalLogout(false);
+    };
+
     return (
         <div className='container-admin'>
             <div className='header-admin'>
@@ -93,7 +104,42 @@ const Admin = () => {
                         Dashboard Management Loket
                     </div>
                 </div>
-                <div className='button-logout'>Keluar</div>
+                <div className='button-logout' onClick={handleClickOpen}>
+                    Keluar
+                </div>
+                <Dialog
+                    open={showModalLogout}
+                    onClose={handleClose}
+                    aria-labelledby='alert-dialog-title'
+                    aria-describedby='alert-dialog-description'
+                >
+                    <div className='dialog-logout'>
+                        <div className='t18b'>Keluar</div>
+                        <div
+                            style={{ textAlign: 'center', margin: '20px 0px' }}
+                        >
+                            Apa Anda yakin ingin keluar dari Dashboard Dashboard
+                            Management Loket?
+                        </div>
+                        <div
+                            className='flexrowaround'
+                            style={{ width: '100%' }}
+                        >
+                            <div
+                                className='button-yes-red'
+                                onClick={() => authContext.signOut()}
+                            >
+                                Ya, Keluar
+                            </div>
+                            <div
+                                className='button-cancel-white'
+                                onClick={() => setShowModalLogout(false)}
+                            >
+                                Cancel
+                            </div>
+                        </div>
+                    </div>
+                </Dialog>
             </div>
             <div style={{ height: 40, backgroundColor: '#f5f5f5' }} />
             <div className='content-admin'>
@@ -140,14 +186,6 @@ const Admin = () => {
                                 </div>
                             </div>
                         </div>
-                        {/* <div className='content-cards-1-footer'>
-                            <Button className='button-control-admin'>
-                                Panggil
-                            </Button>
-                            <Button className='button-control-admin'>
-                                Selanjutnya
-                            </Button>
-                        </div> */}
                     </Card>
                     <div className='content-cards-2'>
                         <div className='flexrowbetween'>
