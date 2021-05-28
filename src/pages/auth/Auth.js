@@ -45,6 +45,12 @@ const Auth = () => {
                 text: 'Password tidak boleh kosong',
             });
         }
+
+        if (form.username !== '' || form.password !== '') {
+            authContext.signIn().then((res) => {
+                history.replace('/admin');
+            });
+        }
     };
 
     return (
