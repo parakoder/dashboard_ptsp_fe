@@ -125,14 +125,16 @@ const Admin = () => {
                                 </div>
                             </div>
                             <div className='card-info'>
-                                <div className='t18b'>Kode Antrean Manual</div>
+                                <div className='t18b' style={{ opacity: 0.5 }}>
+                                    Kode Antrean Manual
+                                </div>
                                 <div style={{ height: 18 }} />
-                                <div className='card-loket'>J 80</div>
+                                <div className='card-loket-disabled'>J 80</div>
                                 <div className='content-cards-1-footer'>
-                                    <Button className='button-control-admin'>
+                                    <Button className='button-control-admin-disabled'>
                                         Panggil
                                     </Button>
-                                    <Button className='button-control-admin'>
+                                    <Button className='button-control-admin-disabled'>
                                         Selanjutnya
                                     </Button>
                                 </div>
@@ -148,12 +150,39 @@ const Admin = () => {
                         </div> */}
                     </Card>
                     <div className='content-cards-2'>
-                        <div className='t18b'>Rekapitulasi Antrean</div>
+                        <div className='flexrowbetween'>
+                            <div className='t18b'>Rekapitulasi Antrean</div>
+                            <div className='button-export'>Cetak Laporan</div>
+                        </div>
                         <div style={{ height: 20 }} />
                         <div className='content-cards-2-body'>
-                            <Card className='content-cards-2-card'>Card</Card>
-                            <Card className='content-cards-2-card'>Card</Card>
-                            <Card className='content-cards-2-card'>Card</Card>
+                            <Card className='content-cards-2-card'>
+                                <div className='t12sb'>Antrean Berlangsung</div>
+                                <div
+                                    className='t40b'
+                                    style={{ margin: '20px 0px' }}
+                                >
+                                    6
+                                </div>
+                            </Card>
+                            <Card className='content-cards-2-card'>
+                                <div className='t12sb'>Antrean Selesai</div>
+                                <div
+                                    className='t40b'
+                                    style={{ margin: '20px 0px' }}
+                                >
+                                    6
+                                </div>
+                            </Card>
+                            <Card className='content-cards-2-card'>
+                                <div className='t12sb'>Total Antrean</div>
+                                <div
+                                    className='t40b'
+                                    style={{ margin: '20px 0px' }}
+                                >
+                                    6
+                                </div>
+                            </Card>
                         </div>
                     </div>
                 </div>

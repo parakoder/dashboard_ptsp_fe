@@ -5,25 +5,24 @@ import './dashboard.scss';
 
 const Dashboard = () => {
     const arrCard = [1, 2, 3, 4, 5, 6, 7];
+    const arrCard2 = [
+        { id: 1, title: 'ECOURT' },
+        { id: 2, title: 'PENGADUAN & INFORMASI' },
+        { id: 3, title: 'HUKUM' },
+        { id: 4, title: 'KEPANITERAAN PIDANA' },
+        { id: 5, title: 'UPAYA PERDATA' },
+        { id: 6, title: 'SALINAN PUTUSAN/EKSEKUSI' },
+        { id: 7, title: 'UMUM & SURAT MASUK' },
+    ];
 
     return (
         <div className='container-dashboard'>
             <div className='content-dashboard'>
                 <div className='grid-card'>
-                    {arrCard.map((item) => {
+                    {arrCard2.map((item) => {
                         return (
                             <>
-                                <div className='item-card-dashboard'>
-                                    <Card className='card-dashboard'>
-                                        <div className='title-card-dashboard'>
-                                            ECOURT
-                                        </div>
-                                        <div className='desc-card-dashboard'>
-                                            E 13
-                                        </div>
-                                    </Card>
-                                </div>
-                                {item === 6 ? (
+                                {item.id === 1 ? (
                                     <div className='logo-text'>
                                         <img
                                             src={
@@ -48,6 +47,21 @@ const Dashboard = () => {
                                         </div>
                                     </div>
                                 ) : null}
+                                <div className='item-card-dashboard'>
+                                    <Card className='card-dashboard'>
+                                        <div className='title-card-dashboard'>
+                                            {item.title}
+                                        </div>
+                                        <div className='desc-card-dashboard'>
+                                            <div className='desc-card-loket'>
+                                                Loket {item.id}
+                                            </div>
+                                            <div className='desc-card-noAntrian'>
+                                                H 34
+                                            </div>
+                                        </div>
+                                    </Card>
+                                </div>
                             </>
                         );
                     })}

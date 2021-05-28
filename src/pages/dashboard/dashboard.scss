@@ -12,7 +12,7 @@
         .grid-card {
             display: flex;
             flex-wrap: wrap;
-            // justify-content: flex-end;
+            justify-content: flex-start;
             width: 100%;
             height: 100%;
 
@@ -25,14 +25,36 @@
             }
 
             .title-card-dashboard {
-                font-size: 24px;
+                font-size: 20px;
                 color: #0d461b;
                 font-weight: bold;
+                text-align: center;
             }
 
             .desc-card-dashboard {
-                font-size: 48px;
-                font-weight: bold;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-around;
+                width: 100%;
+                margin: 10px 0px;
+
+                .desc-card-loket {
+                    display: flex;
+                    flex: 1;
+                    justify-content: center;
+                    font-size: 36px;
+                    border-right: 1px solid $primarySoft;
+                }
+
+                .desc-card-noAntrian {
+                    display: flex;
+                    flex: 1;
+                    justify-content: center;
+                    font-size: 36px;
+                    font-weight: bold;
+                    border-left: 1px solid $primarySoft;
+                }
             }
         }
 

@@ -15,24 +15,24 @@
     @include card();
     flex-direction: column;
     width: 90%;
-    height: 65%;
+    height: 85%;
 }
 
 .t1 {
     color: $red;
-    font-size: 26px;
+    font-size: 20px;
     font-weight: bold;
     text-align: center;
 }
 .t2 {
     color: $primaryDark;
-    font-size: 26px;
+    font-size: 20px;
     font-weight: bold;
     text-align: center;
 }
 .t3 {
     color: $primaryDark;
-    font-size: 26px;
+    font-size: 20px;
     font-weight: 500;
     text-align: center;
 }
@@ -41,6 +41,17 @@
     font-size: 18px;
     font-weight: 600;
     color: black;
+}
+
+.t40b {
+    font-size: 40px;
+    font-weight: bold;
+    color: black;
+}
+
+.t12sb {
+    font-size: 12px;
+    font-weight: 500;
 }
 
 .button-login {
@@ -64,6 +75,7 @@
     padding: 8px 30px;
     color: $errorColor;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .button-problem {
@@ -90,11 +102,49 @@
     color: $primaryDark;
     cursor: pointer;
     font-weight: 500;
-    padding: 5px 20px;
+    padding: 3px 10px;
     text-align: center;
 
     &:hover {
         background-color: $primaryDark;
         color: white;
     }
+}
+
+.button-control-admin-disabled {
+    height: 35px;
+    // width: 22.5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid $primaryDark;
+    border-radius: 5px;
+    color: $primaryDark;
+    // cursor: pointer;
+    font-weight: 500;
+    padding: 3px 10px;
+    text-align: center;
+    opacity: 0.5;
+}
+
+.button-export {
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid $primaryDark;
+    color: $primaryDark;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.flexrow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.flexrowbetween {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 }
