@@ -3,12 +3,7 @@ import { withRouter } from 'react-router-dom';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
 import { AppContext } from '../../services/context/Context';
-import {
-    withStyles,
-    Theme,
-    createStyles,
-    makeStyles,
-} from '@material-ui/core/styles';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -16,7 +11,13 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import Dialog from '@material-ui/core/Dialog';
+import DatePicker from 'react-datepicker';
+import { FiDownload } from 'react-icons/fi';
+import { RiCalendar2Line } from 'react-icons/ri';
+import { IoMdClose } from 'react-icons/io';
+import moment from 'moment';
+import Modals from '../../components/Modals';
+
 import './admin.scss';
 
 const StyledTableCell = withStyles((theme) => ({
@@ -59,22 +60,29 @@ function createData(
 
 const rows = [
     createData(110, 'J 79', 2, '14:20', '14:23', '00:03', '00:20'),
-    createData(110, 'J 79', 2, '14:20', '14:23', '00:03', '00:20'),
-    createData(110, 'J 79', 2, '14:20', '14:23', '00:03', '00:20'),
-    createData(110, 'J 79', 2, '14:20', '14:23', '00:03', '00:20'),
-    createData(110, 'J 79', 2, '14:20', '14:23', '00:03', '00:20'),
-    createData(110, 'J 79', 2, '14:20', '14:23', '00:03', '00:20'),
-    createData(110, 'J 79', 2, '14:20', '14:23', '00:03', '00:20'),
-    createData(110, 'J 79', 2, '14:20', '14:23', '00:03', '00:20'),
+    createData(111, 'J 79', 2, '14:20', '14:23', '00:03', '00:20'),
+    createData(112, 'J 79', 2, '14:20', '14:23', '00:03', '00:20'),
+    createData(113, 'J 79', 2, '14:20', '14:23', '00:03', '00:20'),
+    createData(114, 'J 79', 2, '14:20', '14:23', '00:03', '00:20'),
+    createData(115, 'J 79', 2, '14:20', '14:23', '00:03', '00:20'),
+    createData(116, 'J 79', 2, '14:20', '14:23', '00:03', '00:20'),
+    createData(117, 'J 79', 2, '14:20', '14:23', '00:03', '00:20'),
 ];
-
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     table: {
         minWidth: 700,
         position: 'sticky',
         top: 0,
     },
-});
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    paper: {
+        backgroundColor: theme.palette.background.paper,
+    },
+}));
 
 const Admin = () => {
     const classes = useStyles();
@@ -82,6 +90,7 @@ const Admin = () => {
     const { authContext } = fun;
 
     const [showModalLogout, setShowModalLogout] = useState(false);
+    const [showModalExport, setShowModalExport] = useState(false);
 
     const handleClickOpen = () => {
         setShowModalLogout(true);
@@ -89,6 +98,37 @@ const Admin = () => {
 
     const handleClose = () => {
         setShowModalLogout(false);
+    };
+
+    const handleClickExport = () => {
+        setShowModalExport(true);
+    };
+
+    const handleCloseExport = () => {
+        setShowModalLogout(false);
+    };
+
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(null);
+    const [formattedStartDate, setFormattedStartDate] = useState('');
+    const [formattedEndDate, setFormattedEndDate] = useState('');
+
+    const onChange = (dates) => {
+        const [start, end] = dates;
+
+        var formatStart = moment(start).format('yyyy-MM-DD').toString();
+        var formatEnd = moment(end).format('yyyy-MM-DD').toString();
+
+        setFormattedStartDate(formatStart);
+        setFormattedEndDate(formatEnd);
+
+        setStartDate(start);
+        setEndDate(end);
+    };
+
+    const onClearFilter = () => {
+        setStartDate('');
+        setEndDate('');
     };
 
     return (
@@ -107,40 +147,30 @@ const Admin = () => {
                 <div className='button-logout' onClick={handleClickOpen}>
                     Keluar
                 </div>
-                <Dialog
-                    open={showModalLogout}
-                    onClose={handleClose}
-                    aria-labelledby='alert-dialog-title'
-                    aria-describedby='alert-dialog-description'
-                >
-                    <div className='dialog-logout'>
-                        <div className='t18b'>Keluar</div>
+            </div>
+            <Modals open={showModalLogout} onClose={handleClose}>
+                <div className='dialog-logout'>
+                    <div className='t18b'>Keluar</div>
+                    <div className='desc-dialog-logout'>
+                        Apa Anda yakin ingin keluar dari Dashboard Dashboard
+                        Management Loket?
+                    </div>
+                    <div className='flexrowaround' style={{ width: '100%' }}>
                         <div
-                            style={{ textAlign: 'center', margin: '20px 0px' }}
+                            className='button-yes-red'
+                            onClick={() => authContext.signOut()}
                         >
-                            Apa Anda yakin ingin keluar dari Dashboard Dashboard
-                            Management Loket?
+                            Ya, Keluar
                         </div>
                         <div
-                            className='flexrowaround'
-                            style={{ width: '100%' }}
+                            className='button-cancel-white'
+                            onClick={() => setShowModalLogout(false)}
                         >
-                            <div
-                                className='button-yes-red'
-                                onClick={() => authContext.signOut()}
-                            >
-                                Ya, Keluar
-                            </div>
-                            <div
-                                className='button-cancel-white'
-                                onClick={() => setShowModalLogout(false)}
-                            >
-                                Cancel
-                            </div>
+                            Cancel
                         </div>
                     </div>
-                </Dialog>
-            </div>
+                </div>
+            </Modals>
             <div style={{ height: 40, backgroundColor: '#f5f5f5' }} />
             <div className='content-admin'>
                 <div className='content-cards'>
@@ -190,8 +220,105 @@ const Admin = () => {
                     <div className='content-cards-2'>
                         <div className='flexrowbetween'>
                             <div className='t18b'>Rekapitulasi Antrean</div>
-                            <div className='button-export'>Cetak Laporan</div>
+                            <div
+                                className='button-export'
+                                onClick={handleClickExport}
+                            >
+                                Cetak Laporan
+                            </div>
                         </div>
+                        <Modals
+                            open={showModalExport}
+                            onClose={handleCloseExport}
+                        >
+                            <div className='dialog-export'>
+                                <div className='t18b'>Cetak Laporan</div>
+                                <div className='desc-dialog-export'>
+                                    <div className='desc-dialog-export-content'>
+                                        Simpan Sebagai
+                                    </div>
+                                    <div className='desc-dialog-export-button'>
+                                        XLS
+                                    </div>
+                                </div>
+                                <div className='desc-dialog-export'>
+                                    <div className='desc-dialog-export-content'>
+                                        Rentang Tanggal
+                                    </div>
+                                    <div className='wrapperFilter-date'>
+                                        <RiCalendar2Line />
+                                        <DatePicker
+                                            className='filter-date'
+                                            monthsShown={2}
+                                            selected={startDate}
+                                            onChange={onChange}
+                                            startDate={startDate}
+                                            endDate={endDate}
+                                            selectsRange
+                                            dateFormat='dd MMM'
+                                            placeholderText={'1 Jan'}
+                                            popperPlacement='bottom-end'
+                                            // inline
+                                        ></DatePicker>
+                                        <div>-</div>
+                                        <DatePicker
+                                            className='filter-date'
+                                            monthsShown={2}
+                                            selected={endDate}
+                                            onChange={onChange}
+                                            startDate={startDate}
+                                            endDate={endDate}
+                                            selectsRange
+                                            dateFormat='dd MMM'
+                                            placeholderText='31 Des'
+                                            popperPlacement='bottom-end'
+                                            // disabled
+                                        />
+                                        {startDate !== '' || endDate !== '' ? (
+                                            <IoMdClose
+                                                color='red'
+                                                size={20}
+                                                onClick={onClearFilter}
+                                            />
+                                        ) : null}
+                                    </div>
+                                </div>
+                                <div className='desc-dialog-export'>
+                                    <div className='desc-dialog-export-content'>
+                                        Nama File
+                                    </div>
+                                    <div className='desc-dialog-export-button'>
+                                        <input
+                                            className='export-input'
+                                            placeholder='Laporan'
+                                        />
+                                    </div>
+                                </div>
+                                <div
+                                    className='flexrowaround'
+                                    style={{ width: '100%' }}
+                                >
+                                    <div
+                                        className='button-yes-export'
+                                        onClick={() => alert('export bos')}
+                                    >
+                                        <FiDownload
+                                            size={24}
+                                            style={{ marginRight: 5 }}
+                                        />
+                                        Cetak
+                                    </div>
+                                    <div
+                                        className='button-cancel-white'
+                                        onClick={() =>
+                                            setShowModalExport(false)
+                                        }
+                                    >
+                                        Cancel
+                                    </div>
+                                </div>
+                            </div>
+                        </Modals>
                         <div style={{ height: 20 }} />
                         <div className='content-cards-2-body'>
                             <Card className='content-cards-2-card'>
@@ -293,8 +420,6 @@ const Admin = () => {
                             </TableBody>
                         </Table>
                     </TableContainer>
-
-                    {/* <div onClick={() => authContext.signOut()}>Logout</div> */}
                 </div>
             </div>
         </div>

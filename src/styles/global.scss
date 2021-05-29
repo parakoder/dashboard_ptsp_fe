@@ -152,6 +152,18 @@
     cursor: pointer;
 }
 
+.button-yes-export {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    color: white;
+    background-color: $primaryDark;
+    cursor: pointer;
+    padding: 10px 20px;
+}
+
 .flexrow {
     display: flex;
     flex-direction: row;
