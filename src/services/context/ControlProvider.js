@@ -2,31 +2,23 @@ import { useMemo, useReducer } from 'react';
 import { LoginHandler } from '../handler/AuthHandler';
 
 const initialState = {
-    dataSignIn: {},
-    token: null,
+    dataDashboard: 0,
     error: null,
     isLoading: false,
 };
 
 const ACTIONS = {
-    LOGIN: 'LOGIN',
-    LOGOUT: 'LOGOUT',
+    NEXT: 'NEXT',
     ERROR: 'ERROR',
     ISLOADING: 'ISLOADING',
 };
 
-const loginReducer = (prevState, action) => {
+const controlReducer = (prevState, action) => {
     switch (action.type) {
-        case ACTIONS.LOGIN:
+        case ACTIONS.NEXT:
             return {
                 ...prevState,
-                dataSignIn: action.dataSignIn,
-                token: action.token,
-            };
-        case ACTIONS.LOGOUT:
-            return {
-                ...prevState,
-                token: null,
+                dataDashboard: prevState.dataDashboard + 1,
             };
         case ACTIONS.ERROR:
             return {
@@ -43,10 +35,10 @@ const loginReducer = (prevState, action) => {
     }
 };
 
-const AuthProvider = () => {
-    const [authState, dispatch] = useReducer(loginReducer, initialState);
+const ControlProvider = () => {
+    const [controlState, dispatch] = useReducer(controlReducer, initialState);
 
-    const authContext = useMemo(
+    const controlContext = useMemo(
         () => ({
             signIn: async (username, password) => {
                 dispatch({ type: ACTIONS.ISLOADING, isLoading: true });
@@ -72,11 +64,14 @@ const AuthProvider = () => {
                 localStorage.removeItem('@user_dashboard_ptsp');
                 dispatch({ type: ACTIONS.LOGOUT, token: null });
             },
+            next: async () => {
+                dispatch({ type: ACTIONS.NEXT });
+            },
         }),
         []
     );
 
-    return { authState, authContext };
+    return { controlState, controlContext };
 };
 
-export default AuthProvider;
+export default ControlProvider;

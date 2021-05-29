@@ -87,7 +87,8 @@ const useStyles = makeStyles((theme) => ({
 const Admin = () => {
     const classes = useStyles();
     const { state, fun } = useContext(AppContext);
-    const { authContext } = fun;
+    const { authContext, controlContext } = fun;
+    const { controlState } = state;
 
     const [showModalLogout, setShowModalLogout] = useState(false);
     const [showModalExport, setShowModalExport] = useState(false);
@@ -195,7 +196,10 @@ const Admin = () => {
                                     <Button className='button-control-admin'>
                                         Panggil
                                     </Button>
-                                    <Button className='button-control-admin'>
+                                    <Button
+                                        className='button-control-admin'
+                                        onClick={() => controlContext.next()}
+                                    >
                                         Selanjutnya
                                     </Button>
                                 </div>
@@ -336,7 +340,7 @@ const Admin = () => {
                                     className='t40b'
                                     style={{ margin: '20px 0px' }}
                                 >
-                                    6
+                                    {controlState.dataDashboard}
                                 </div>
                             </Card>
                             <Card className='content-cards-2-card'>

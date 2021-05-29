@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Marquee from 'react-fast-marquee';
 import Card from '../../components/Card';
+import { AppContext } from '../../services/context/Context';
 import './dashboard.scss';
 
 const Dashboard = () => {
@@ -14,6 +15,9 @@ const Dashboard = () => {
         { id: 6, title: 'SALINAN PUTUSAN/EKSEKUSI' },
         { id: 7, title: 'UMUM & SURAT MASUK' },
     ];
+
+    const { state } = useContext(AppContext);
+    console.log('ajkdn', state.controlState);
 
     return (
         <div className='container-dashboard'>
