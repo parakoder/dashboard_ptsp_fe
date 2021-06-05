@@ -1,5 +1,23 @@
 import { HandlerAPI } from '../../services/HandlerAPI';
 
+export const ExportData = async (start, end) => {
+    try {
+        const response = await HandlerAPI(
+            `${process.env.REACT_APP_ROOT_API}/v1/api/antrian/export`,
+            'get',
+            {
+                start,
+                end,
+            }
+        );
+        console.log('res awal export data', response);
+        return Promise.resolve(response);
+    } catch (error) {
+        console.log('error awal export data', error);
+        return Promise.reject(error);
+    }
+};
+
 export const ExportPerdata = async (data) => {
     try {
         const response = await HandlerAPI(
