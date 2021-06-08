@@ -51,19 +51,21 @@ const AuthProvider = () => {
             signIn: async (username, password) => {
                 dispatch({ type: ACTIONS.ISLOADING, isLoading: true });
                 try {
-                    // const resLogin = await LoginHandler(username, password);
-                    localStorage.setItem(
-                        '@user_dashboard_ptsp',
-                        'ajwndiajwndj'
-                    );
-                    dispatch({
-                        type: ACTIONS.LOGIN,
-                        dataSignIn: { access_token: 'ajwndjadw' },
-                        token: localStorage.getItem('@user_dashboard_ptsp'),
-                    });
+                    const resLogin = await LoginHandler(username, password);
+                    console.log('resswoi login', resLogin);
+                    // localStorage.setItem(
+                    //     '@user_dashboard_ptsp',
+                    //     'ajwndiajwndj'
+                    // );
+                    // dispatch({
+                    //     type: ACTIONS.LOGIN,
+                    //     dataSignIn: { access_token: 'ajwndjadw' },
+                    //     token: localStorage.getItem('@user_dashboard_ptsp'),
+                    // });
                     // return resLogin;
-                    return true;
+                    return resLogin;
                 } catch (error) {
+                    console.log('err ctx login');
                     dispatch({ type: ACTIONS.ERROR, error: error });
                     return error;
                 }

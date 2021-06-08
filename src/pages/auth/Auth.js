@@ -47,9 +47,16 @@ const Auth = () => {
         }
 
         if (form.username !== '' || form.password !== '') {
-            authContext.signIn().then((res) => {
-                history.replace('/admin');
-            });
+            authContext
+                .signIn(form.username, form.password)
+                .then((res) => {
+                    console.log('res login', res);
+                    // history.replace('/admin');
+                })
+                .catch((err) => {
+                    console.log('err', err);
+                    alert(err.request.status);
+                });
         }
     };
 
