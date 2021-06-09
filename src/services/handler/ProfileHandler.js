@@ -3,7 +3,7 @@ import { HandlerAPI } from '../HandlerAPI';
 export const ProfileHandler = async (username) => {
     try {
         const response = await HandlerAPI(
-            `${process.env.REACT_APP_ROOT_API}/v1/api/antrian/profile`,
+            `${process.env.REACT_APP_ROOT_API_ADMIN}/v1/api/antrian/profile`,
             'get',
             {
                 username,

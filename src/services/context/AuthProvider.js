@@ -53,20 +53,28 @@ const AuthProvider = () => {
                 try {
                     const resLogin = await LoginHandler(username, password);
                     console.log('resswoi login', resLogin);
-                    // localStorage.setItem(
-                    //     '@user_dashboard_ptsp',
-                    //     'ajwndiajwndj'
-                    // );
-                    // dispatch({
-                    //     type: ACTIONS.LOGIN,
-                    //     dataSignIn: { access_token: 'ajwndjadw' },
-                    //     token: localStorage.getItem('@user_dashboard_ptsp'),
-                    // });
+                    if (resLogin.status === 200) {
+                        localStorage.setItem(
+                            '@user_dashboard_ptsp',
+                            JSON.stringify(resLogin.data)
+                        );
+                        dispatch({
+                            type: ACTIONS.LOGIN,
+                            dataSignIn: resLogin.data,
+                            token: resLogin.data.accessToken,
+                        });
+                    }
                     // return resLogin;
                     return resLogin;
                 } catch (error) {
-                    console.log('err ctx login');
-                    dispatch({ type: ACTIONS.ERROR, error: error });
+                    console.log(
+                        'err ctx login',
+                        JSON.parse(error.responseText)
+                    );
+                    dispatch({
+                        type: ACTIONS.ERROR,
+                        error: error,
+                    });
                     return error;
                 }
             },
