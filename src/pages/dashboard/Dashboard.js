@@ -4,6 +4,7 @@ import Card from '../../components/Card';
 import { AppContext } from '../../services/context/Context';
 import { RunningHandler } from '../../services/handler/RunningTextHandler';
 import './dashboard.scss';
+import { GoPrimitiveDot } from 'react-icons/go';
 
 const Dashboard = () => {
     const arrCard = [1, 2, 3, 4, 5, 6, 7];
@@ -26,6 +27,10 @@ const Dashboard = () => {
             .then((res) => {
                 console.log('res running', res);
                 if (res.status === 200 && res.data !== null) {
+                    // const mappingData = res.data.map(val => {
+
+                    // });
+
                     setRunningState(res.data);
                 } else {
                     setRunningState([]);
@@ -91,7 +96,11 @@ const Dashboard = () => {
             <div className='footer'>
                 <Marquee gradient={false} speed={50}>
                     {runningState.map((i) => {
-                        return <div style={{ fontWeight: 'w500' }}>{i}</div>;
+                        return (
+                            <div className='txt-run'>
+                                {i} <GoPrimitiveDot size={20} />
+                            </div>
+                        );
                     })}
                 </Marquee>
             </div>

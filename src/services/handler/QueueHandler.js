@@ -5,11 +5,9 @@ export const QueueHandler = async (idPelayanan) => {
         const response = await HandlerAPI(
             `${process.env.REACT_APP_ROOT_API_ADMIN}/v1/api/antrian/queue-table`,
             'get',
-            {
-                idPelayanan,
-            }
+            { idPelayanan }
         );
-        return Promise.resolve(response);
+        return Promise.resolve(response.data);
     } catch (error) {
         return Promise.reject(error);
     }

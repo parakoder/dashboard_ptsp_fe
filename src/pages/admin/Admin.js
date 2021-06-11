@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
@@ -21,6 +21,12 @@ import Modals from '../../components/Modals';
 import './admin.scss';
 import { CardHandler } from '../../services/handler/CardHandler';
 import { ProfileHandler } from '../../services/handler/ProfileHandler';
+import { QueueHandler } from '../../services/handler/QueueHandler';
+import { ARRIVAL_TIME } from '../../services/utils/constants';
+import { ExportData } from '../../services/handler/ExportHandler';
+import { CallHandler } from '../../services/handler/ButtonHandler';
+
+import audioBell from '../../assets/voice/bell.mp3';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -87,6 +93,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Admin = () => {
+    const audioRef = useRef(null);
     const classes = useStyles();
     const { state, fun } = useContext(AppContext);
     const { authContext, controlContext } = fun;
@@ -144,6 +151,7 @@ const Admin = () => {
 
     const [cardData, setCardData] = useState(null);
     const [profileData, setProfileData] = useState(null);
+    const [queueData, setQueueData] = useState([]);
 
     useEffect(() => {
         CardHandler(dataStorage.loketID)
@@ -166,8 +174,94 @@ const Admin = () => {
             .catch((err) => {
                 console.log('err profile', err);
             });
+
+        QueueHandler(dataStorage.loketID)
+            .then((res) => {
+                console.log('res queue', res);
+                setQueueData(res.data);
+            })
+            .catch((err) => {
+                console.log('err queue', err);
+            });
+
         return () => {};
     }, []);
+
+    const [fileNameExport, setFileNameExport] = useState('');
+
+    const ExportFunction = () => {
+        if (formattedStartDate === '' || formattedEndDate === '') {
+            alert('Tanggal tidak boleh kosong');
+        }
+
+        if (fileNameExport.length === 0) {
+            alert('Mohon isi nama file');
+        }
+
+        if (
+            fileNameExport.length > 0 &&
+            formattedStartDate !== '' &&
+            formattedEndDate !== ''
+        ) {
+            ExportData(formattedStartDate, formattedEndDate)
+                .then((res) => {
+                    const url = window.URL.createObjectURL(
+                        new Blob([res.data])
+                    );
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute(
+                        'download',
+                        `${fileNameExport} (${formattedStartDate}-${formattedEndDate}).xlsx`
+                    );
+                    document.body.appendChild(link);
+                    link.click();
+                })
+                .catch((err) => console.log('err export', err));
+        }
+    };
+
+    const [audioIndex, setAudioIndex] = useState(0);
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    const [audioArr, setAudioArr] = useState([]);
+
+    const getCall = () => {
+        CallHandler(dataStorage.loketID)
+            .then((res) => {
+                console.log('res call', res);
+                let arrVoice = [];
+                if (res.status === 200) {
+                    setAudioIndex(0);
+                    res.data.map((data) => {
+                        console.log('dataaaa mp3', data);
+                        let item = `/public/voice/${data}.mp3`;
+
+                        return arrVoice.push(item);
+                    });
+                    console.log('arrVoice', arrVoice);
+                    setAudioArr(arrVoice);
+                    audioRef.current.play();
+                    setIsPlaying(true);
+                }
+            })
+            .catch((err) => {
+                console.log('err call', err);
+            });
+    };
+
+    // const audio = audioArr[0];
+    const handlePlay = () => {
+        getCall();
+        setAudioIndex(0);
+        audioRef.current.play().catch((err) => console.log('err audio', err));
+        setIsPlaying(true);
+    };
+
+    const handlePause = () => {
+        audioRef.current.pause();
+        setIsPlaying(false);
+    };
 
     return (
         <div className='container-admin'>
@@ -237,9 +331,33 @@ const Admin = () => {
                                     {cardData && cardData.noAntrian}
                                 </div>
                                 <div className='content-cards-1-footer'>
-                                    <Button className='button-control-admin'>
-                                        Panggil
-                                    </Button>
+                                    <audio
+                                        autoPlay
+                                        controls={true}
+                                        preload='auto'
+                                        style={{ display: 'none' }}
+                                        ref={audioRef}
+                                        // src={audioArr[audioIndex]}
+                                        src={audioBell}
+                                        onEnded={() =>
+                                            setAudioIndex((i) => i + 1)
+                                        }
+                                    />
+                                    {isPlaying ? (
+                                        <Button
+                                            className='button-control-admin'
+                                            onClick={handlePause}
+                                        >
+                                            ||
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            className='button-control-admin'
+                                            onClick={getCall}
+                                        >
+                                            Panggil
+                                        </Button>
+                                    )}
                                     <Button
                                         className='button-control-admin'
                                         onClick={() => controlContext.next()}
@@ -339,6 +457,12 @@ const Admin = () => {
                                         <input
                                             className='export-input'
                                             placeholder='Laporan'
+                                            value={fileNameExport}
+                                            onChange={(e) =>
+                                                setFileNameExport(
+                                                    e.target.value
+                                                )
+                                            }
                                         />
                                     </div>
                                 </div>
@@ -348,7 +472,8 @@ const Admin = () => {
                                 >
                                     <div
                                         className='button-yes-export'
-                                        onClick={() => alert('export bos')}
+                                        // onClick={() => alert('export bos')}
+                                        onClick={ExportFunction}
                                     >
                                         <FiDownload
                                             size={24}
@@ -413,14 +538,12 @@ const Admin = () => {
                         >
                             <TableHead>
                                 <TableRow>
-                                    <StyledTableCell align='center'>
-                                        No. Urut
-                                    </StyledTableCell>
+                                    <StyledTableCell>No. Urut</StyledTableCell>
                                     <StyledTableCell align='center'>
                                         Nomor Antrean
                                     </StyledTableCell>
                                     <StyledTableCell align='center'>
-                                        Counter
+                                        Loket
                                     </StyledTableCell>
                                     <StyledTableCell align='center'>
                                         Jam Kunjungan
@@ -437,31 +560,31 @@ const Admin = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {rows.map((row) => (
-                                    <StyledTableRow key={row.noUrut}>
+                                {queueData.map((queue, i) => (
+                                    <StyledTableRow key={i}>
                                         <StyledTableCell
                                             component='th'
                                             scope='row'
                                         >
-                                            {row.noUrut}
+                                            {i + 1}
                                         </StyledTableCell>
                                         <StyledTableCell align='center'>
-                                            {row.noAntrean}
+                                            {queue.noAntrian}
                                         </StyledTableCell>
                                         <StyledTableCell align='center'>
-                                            {row.counter}
+                                            {queue.Loket}
                                         </StyledTableCell>
                                         <StyledTableCell align='center'>
-                                            {row.jamKunjungan}
+                                            {queue.jamKedatangan}
                                         </StyledTableCell>
                                         <StyledTableCell align='center'>
-                                            {row.jamDilayani}
+                                            {queue.jamDilayani}
                                         </StyledTableCell>
                                         <StyledTableCell align='center'>
-                                            {row.lamaMenunggu}
+                                            {queue.lamaMenunggu}
                                         </StyledTableCell>
                                         <StyledTableCell align='center'>
-                                            {row.lamaPelayanan}
+                                            {queue.lamaPelayanan}
                                         </StyledTableCell>
                                     </StyledTableRow>
                                 ))}

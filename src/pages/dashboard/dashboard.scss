@@ -92,5 +92,12 @@
         line-height: normal;
         letter-spacing: normal;
         text-align: center;
+
+        .txt-run {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     }
 }
