@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Marquee from 'react-fast-marquee';
 import Card from '../../components/Card';
 import { AppContext } from '../../services/context/Context';
+import { RunningHandler } from '../../services/handler/RunningTextHandler';
 import './dashboard.scss';
 
 const Dashboard = () => {
@@ -18,6 +19,21 @@ const Dashboard = () => {
 
     const { state } = useContext(AppContext);
     console.log('ajkdn', state.controlState);
+    const [runningState, setRunningState] = useState([]);
+
+    useEffect(() => {
+        RunningHandler()
+            .then((res) => {
+                console.log('res running', res);
+                if (res.status === 200 && res.data !== null) {
+                    setRunningState(res.data);
+                } else {
+                    setRunningState([]);
+                }
+            })
+            .catch((err) => console.log('err', err));
+        return () => {};
+    }, []);
 
     return (
         <div className='container-dashboard'>
@@ -74,11 +90,9 @@ const Dashboard = () => {
             </div>
             <div className='footer'>
                 <Marquee gradient={false} speed={50}>
-                    <div style={{ fontWeight: 'w500' }}>
-                        Patuhilah protokol kesehatan demi kesehatan dan
-                        keselamatan kita bersama di dalam melaksanakan aktivitas
-                        sehari-hari
-                    </div>
+                    {runningState.map((i) => {
+                        return <div style={{ fontWeight: 'w500' }}>{i}</div>;
+                    })}
                 </Marquee>
             </div>
         </div>

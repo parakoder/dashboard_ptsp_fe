@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
@@ -19,6 +19,8 @@ import moment from 'moment';
 import Modals from '../../components/Modals';
 
 import './admin.scss';
+import { CardHandler } from '../../services/handler/CardHandler';
+import { ProfileHandler } from '../../services/handler/ProfileHandler';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -132,6 +134,41 @@ const Admin = () => {
         setEndDate('');
     };
 
+    console.log(
+        'localstorage',
+        JSON.parse(localStorage.getItem('@user_dashboard_ptsp'))
+    );
+    const dataStorage = JSON.parse(
+        localStorage.getItem('@user_dashboard_ptsp')
+    );
+
+    const [cardData, setCardData] = useState(null);
+    const [profileData, setProfileData] = useState(null);
+
+    useEffect(() => {
+        CardHandler(dataStorage.loketID)
+            .then((res) => {
+                console.log('res card', res);
+                if (res.status === 200) {
+                    setCardData(res.data);
+                }
+            })
+            .catch((err) => {
+                console.log('err card', err);
+            });
+        ProfileHandler(dataStorage.userName)
+            .then((res) => {
+                console.log('res profile', res);
+                if (res.status === 200) {
+                    setProfileData(res.data);
+                }
+            })
+            .catch((err) => {
+                console.log('err profile', err);
+            });
+        return () => {};
+    }, []);
+
     return (
         <div className='container-admin'>
             <div className='header-admin'>
@@ -177,21 +214,28 @@ const Admin = () => {
                 <div className='content-cards'>
                     <Card className='content-cards-1'>
                         <div className='content-cards-1-body'>
-                            <div className='card-info'>
+                            <div
+                                className='card-info'
+                                style={{ marginBottom: 20 }}
+                            >
                                 <div className='t18b'>Informasi Loket</div>
                                 <div style={{ height: 18 }} />
                                 <div>ID Loket</div>
-                                <div style={{ fontWeight: 'bold' }}>J0003</div>
+                                <div style={{ fontWeight: 'bold' }}>
+                                    {profileData && profileData.loketID}
+                                </div>
                                 <div style={{ height: 18 }} />
                                 <div>Nama Loket</div>
                                 <div style={{ fontWeight: 'bold' }}>
-                                    Pengaduan dan Informasi
+                                    {profileData && profileData.namaPelayanan}
                                 </div>
                             </div>
                             <div className='card-info'>
                                 <div className='t18b'>Kode Antrean Online</div>
                                 <div style={{ height: 18 }} />
-                                <div className='card-loket'>J 80</div>
+                                <div className='card-loket'>
+                                    {cardData && cardData.noAntrian}
+                                </div>
                                 <div className='content-cards-1-footer'>
                                     <Button className='button-control-admin'>
                                         Panggil
@@ -331,7 +375,7 @@ const Admin = () => {
                                     className='t40b'
                                     style={{ margin: '20px 0px' }}
                                 >
-                                    6
+                                    {cardData && cardData.antrianBerlangsung}
                                 </div>
                             </Card>
                             <Card className='content-cards-2-card'>
@@ -340,7 +384,7 @@ const Admin = () => {
                                     className='t40b'
                                     style={{ margin: '20px 0px' }}
                                 >
-                                    {controlState.dataDashboard}
+                                    {cardData && cardData.antrianSelesai}
                                 </div>
                             </Card>
                             <Card className='content-cards-2-card'>
@@ -349,7 +393,7 @@ const Admin = () => {
                                     className='t40b'
                                     style={{ margin: '20px 0px' }}
                                 >
-                                    6
+                                    {cardData && cardData.totalAntrian}
                                 </div>
                             </Card>
                         </div>

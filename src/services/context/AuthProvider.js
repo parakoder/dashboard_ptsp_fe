@@ -63,6 +63,7 @@ const AuthProvider = () => {
                             dataSignIn: resLogin.data,
                             token: resLogin.data.accessToken,
                         });
+                        dispatch({ type: ACTIONS.ISLOADING, isLoading: false });
                     }
                     // return resLogin;
                     return resLogin;
@@ -73,9 +74,9 @@ const AuthProvider = () => {
                     );
                     dispatch({
                         type: ACTIONS.ERROR,
-                        error: error,
+                        error: JSON.parse(error.responseText).message,
                     });
-                    return error;
+                    return JSON.parse(error.responseText);
                 }
             },
             signOut: async () => {

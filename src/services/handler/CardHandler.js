@@ -5,12 +5,11 @@ export const CardHandler = async (idPelayanan) => {
         const response = await HandlerAPI(
             `${process.env.REACT_APP_ROOT_API_ADMIN}/v1/api/antrian/card`,
             'get',
-            {
-                idPelayanan,
-            }
+            { idPelayanan }
         );
-        return Promise.resolve(response);
+        return Promise.resolve(response.data);
     } catch (error) {
+        console.log('err', error);
         return Promise.reject(error);
     }
 };

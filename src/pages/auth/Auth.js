@@ -51,11 +51,18 @@ const Auth = () => {
                 .signIn(form.username, form.password)
                 .then((res) => {
                     console.log('res login', res);
-                    // history.replace('/admin');
+
+                    if (res.status === 200) {
+                        history.replace('/admin');
+                    }
+
+                    if (res.status === 400) {
+                        alert(res.message);
+                    }
                 })
                 .catch((err) => {
                     console.log('err', err);
-                    alert(err.request.status);
+                    alert(err.message);
                 });
         }
     };
