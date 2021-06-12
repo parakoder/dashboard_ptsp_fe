@@ -27,6 +27,7 @@ import { ExportData } from '../../services/handler/ExportHandler';
 import { CallHandler } from '../../services/handler/ButtonHandler';
 
 import audioBell from '../../assets/voice/bell.mp3';
+import { VoiceList } from '../../services/utils/voicelist';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -227,26 +228,38 @@ const Admin = () => {
     const [audioArr, setAudioArr] = useState([]);
 
     const getCall = () => {
+        setIsPlaying(true);
         CallHandler(dataStorage.loketID)
             .then((res) => {
                 console.log('res call', res);
                 let arrVoice = [];
                 if (res.status === 200) {
                     setAudioIndex(0);
+
                     res.data.map((data) => {
                         console.log('dataaaa mp3', data);
-                        let item = `/public/voice/${data}.mp3`;
-
-                        return arrVoice.push(item);
+                        // let item = `/public/voice/${data}.mp3`;
+                        let item = VoiceList.find((o) => o.name === data);
+                        console.log('itemm', item);
+                        if (item !== undefined) {
+                            return arrVoice.push(item.path);
+                        }
                     });
                     console.log('arrVoice', arrVoice);
                     setAudioArr(arrVoice);
                     audioRef.current.play();
-                    setIsPlaying(true);
+                    if (
+                        audioRef.current.duration === 0 &&
+                        !audioRef.current.paused
+                    ) {
+                        setIsPlaying(false);
+                    }
                 }
             })
             .catch((err) => {
                 console.log('err call', err);
+                audioRef.current.pause();
+                setIsPlaying(false);
             });
     };
 
@@ -260,6 +273,7 @@ const Admin = () => {
 
     const handlePause = () => {
         audioRef.current.pause();
+
         setIsPlaying(false);
     };
 
@@ -337,8 +351,8 @@ const Admin = () => {
                                         preload='auto'
                                         style={{ display: 'none' }}
                                         ref={audioRef}
-                                        // src={audioArr[audioIndex]}
-                                        src={audioBell}
+                                        src={audioArr[audioIndex]}
+                                        // src={VoiceList[0].path}
                                         onEnded={() =>
                                             setAudioIndex((i) => i + 1)
                                         }
