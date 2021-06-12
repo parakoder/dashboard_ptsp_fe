@@ -24,7 +24,7 @@ import { ProfileHandler } from '../../services/handler/ProfileHandler';
 import { QueueHandler } from '../../services/handler/QueueHandler';
 import { ARRIVAL_TIME } from '../../services/utils/constants';
 import { ExportData } from '../../services/handler/ExportHandler';
-import { CallHandler } from '../../services/handler/ButtonHandler';
+import { CallHandler, NextHandler } from '../../services/handler/ButtonHandler';
 
 import audioBell from '../../assets/voice/bell.mp3';
 import { VoiceList } from '../../services/utils/voicelist';
@@ -155,6 +155,16 @@ const Admin = () => {
     const [queueData, setQueueData] = useState([]);
 
     useEffect(() => {
+        GetCardData();
+
+        GetProfileData();
+
+        GetQueueData();
+
+        return () => {};
+    }, []);
+
+    const GetCardData = () => {
         CardHandler(dataStorage.loketID)
             .then((res) => {
                 console.log('res card', res);
@@ -165,6 +175,9 @@ const Admin = () => {
             .catch((err) => {
                 console.log('err card', err);
             });
+    };
+
+    const GetProfileData = () => {
         ProfileHandler(dataStorage.userName)
             .then((res) => {
                 console.log('res profile', res);
@@ -175,7 +188,9 @@ const Admin = () => {
             .catch((err) => {
                 console.log('err profile', err);
             });
+    };
 
+    const GetQueueData = () => {
         QueueHandler(dataStorage.loketID)
             .then((res) => {
                 console.log('res queue', res);
@@ -184,9 +199,7 @@ const Admin = () => {
             .catch((err) => {
                 console.log('err queue', err);
             });
-
-        return () => {};
-    }, []);
+    };
 
     const [fileNameExport, setFileNameExport] = useState('');
 
@@ -277,6 +290,21 @@ const Admin = () => {
         setIsPlaying(false);
     };
 
+    const nextHandler = () => {
+        NextHandler(dataStorage.loketID)
+            .then((res) => {
+                console.log('res next', res);
+                if (res.status === 200) {
+                    GetCardData();
+                    GetProfileData();
+                    GetQueueData();
+                }
+            })
+            .catch((err) => {
+                console.log('error next', err);
+            });
+    };
+
     return (
         <div className='container-admin'>
             <div className='header-admin'>
@@ -353,9 +381,15 @@ const Admin = () => {
                                         ref={audioRef}
                                         src={audioArr[audioIndex]}
                                         // src={VoiceList[0].path}
-                                        onEnded={() =>
-                                            setAudioIndex((i) => i + 1)
-                                        }
+                                        onEnded={() => {
+                                            setAudioIndex((i) => i + 1);
+                                            if (
+                                                audioIndex ===
+                                                audioArr.length - 1
+                                            ) {
+                                                setIsPlaying(false);
+                                            }
+                                        }}
                                     />
                                     {isPlaying ? (
                                         <Button
@@ -374,7 +408,7 @@ const Admin = () => {
                                     )}
                                     <Button
                                         className='button-control-admin'
-                                        onClick={() => controlContext.next()}
+                                        onClick={nextHandler}
                                     >
                                         Selanjutnya
                                     </Button>
@@ -574,34 +608,35 @@ const Admin = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {queueData.map((queue, i) => (
-                                    <StyledTableRow key={i}>
-                                        <StyledTableCell
-                                            component='th'
-                                            scope='row'
-                                        >
-                                            {i + 1}
-                                        </StyledTableCell>
-                                        <StyledTableCell align='center'>
-                                            {queue.noAntrian}
-                                        </StyledTableCell>
-                                        <StyledTableCell align='center'>
-                                            {queue.Loket}
-                                        </StyledTableCell>
-                                        <StyledTableCell align='center'>
-                                            {queue.jamKedatangan}
-                                        </StyledTableCell>
-                                        <StyledTableCell align='center'>
-                                            {queue.jamDilayani}
-                                        </StyledTableCell>
-                                        <StyledTableCell align='center'>
-                                            {queue.lamaMenunggu}
-                                        </StyledTableCell>
-                                        <StyledTableCell align='center'>
-                                            {queue.lamaPelayanan}
-                                        </StyledTableCell>
-                                    </StyledTableRow>
-                                ))}
+                                {queueData &&
+                                    queueData.map((queue, i) => (
+                                        <StyledTableRow key={i}>
+                                            <StyledTableCell
+                                                component='th'
+                                                scope='row'
+                                            >
+                                                {i + 1}
+                                            </StyledTableCell>
+                                            <StyledTableCell align='center'>
+                                                {queue.noAntrian}
+                                            </StyledTableCell>
+                                            <StyledTableCell align='center'>
+                                                {queue.Loket}
+                                            </StyledTableCell>
+                                            <StyledTableCell align='center'>
+                                                {queue.jamKedatangan}
+                                            </StyledTableCell>
+                                            <StyledTableCell align='center'>
+                                                {queue.jamDilayani}
+                                            </StyledTableCell>
+                                            <StyledTableCell align='center'>
+                                                {queue.lamaMenunggu}
+                                            </StyledTableCell>
+                                            <StyledTableCell align='center'>
+                                                {queue.lamaPelayanan}
+                                            </StyledTableCell>
+                                        </StyledTableRow>
+                                    ))}
                             </TableBody>
                         </Table>
                     </TableContainer>
