@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Route, Link } from 'react-router-dom';
 import Admin from '../pages/admin/Admin';
-import Dashboard from '../pages/dashboard/Dashboard';
+import Display from '../pages/display/Display';
 import Auth from '../pages/auth/Auth';
 import { AppContext } from '../services/context/Context';
 import ProtectedRoute from './ProtectedRoute';
@@ -19,7 +19,7 @@ const Routes = () => {
             <Route path='/' exact>
                 <Auth />
             </Route>
-            <Route path='/dashboard' exact component={Dashboard} />
+            <Route path='/display' exact component={Display} />
             <ProtectedRoute
                 path='/admin'
                 component={Admin}

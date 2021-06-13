@@ -22,11 +22,8 @@ import './admin.scss';
 import { CardHandler } from '../../services/handler/CardHandler';
 import { ProfileHandler } from '../../services/handler/ProfileHandler';
 import { QueueHandler } from '../../services/handler/QueueHandler';
-import { ARRIVAL_TIME } from '../../services/utils/constants';
 import { ExportData } from '../../services/handler/ExportHandler';
 import { CallHandler, NextHandler } from '../../services/handler/ButtonHandler';
-
-import audioBell from '../../assets/voice/bell.mp3';
 import { VoiceList } from '../../services/utils/voicelist';
 
 const StyledTableCell = withStyles((theme) => ({
@@ -47,36 +44,6 @@ const StyledTableRow = withStyles((theme) => ({
     },
 }))(TableRow);
 
-function createData(
-    noUrut,
-    noAntrean,
-    counter,
-    jamKunjungan,
-    jamDilayani,
-    lamaMenunggu,
-    lamaPelayanan
-) {
-    return {
-        noUrut,
-        noAntrean,
-        counter,
-        jamKunjungan,
-        jamDilayani,
-        lamaMenunggu,
-        lamaPelayanan,
-    };
-}
-
-const rows = [
-    createData(110, 'J 79', 2, '14:20', '14:23', '00:03', '00:20'),
-    createData(111, 'J 79', 2, '14:20', '14:23', '00:03', '00:20'),
-    createData(112, 'J 79', 2, '14:20', '14:23', '00:03', '00:20'),
-    createData(113, 'J 79', 2, '14:20', '14:23', '00:03', '00:20'),
-    createData(114, 'J 79', 2, '14:20', '14:23', '00:03', '00:20'),
-    createData(115, 'J 79', 2, '14:20', '14:23', '00:03', '00:20'),
-    createData(116, 'J 79', 2, '14:20', '14:23', '00:03', '00:20'),
-    createData(117, 'J 79', 2, '14:20', '14:23', '00:03', '00:20'),
-];
 const useStyles = makeStyles((theme) => ({
     table: {
         minWidth: 700,
@@ -97,8 +64,7 @@ const Admin = () => {
     const audioRef = useRef(null);
     const classes = useStyles();
     const { state, fun } = useContext(AppContext);
-    const { authContext, controlContext } = fun;
-    const { controlState } = state;
+    const { authContext } = fun;
 
     const [showModalLogout, setShowModalLogout] = useState(false);
     const [showModalExport, setShowModalExport] = useState(false);
@@ -142,26 +108,37 @@ const Admin = () => {
         setEndDate('');
     };
 
-    console.log(
-        'localstorage',
-        JSON.parse(localStorage.getItem('@user_dashboard_ptsp'))
-    );
+    // console.log(
+    //     'localstorage',
+    //     JSON.parse(localStorage.getItem('@user_dashboard_ptsp'))
+    // );
     const dataStorage = JSON.parse(
         localStorage.getItem('@user_dashboard_ptsp')
     );
 
-    const [cardData, setCardData] = useState(null);
     const [profileData, setProfileData] = useState(null);
-    const [queueData, setQueueData] = useState([]);
+
+    useEffect(() => {
+        GetProfileData();
+    }, []);
+
+    const GetProfileData = () => {
+        ProfileHandler(dataStorage.userName)
+            .then((res) => {
+                console.log('res profile', res);
+                if (res.status === 200) {
+                    setProfileData(res.data);
+                }
+            })
+            .catch((err) => {
+                console.log('err profile', err);
+            });
+    };
+
+    const [cardData, setCardData] = useState(null);
 
     useEffect(() => {
         GetCardData();
-
-        GetProfileData();
-
-        GetQueueData();
-
-        return () => {};
     }, []);
 
     const GetCardData = () => {
@@ -177,18 +154,11 @@ const Admin = () => {
             });
     };
 
-    const GetProfileData = () => {
-        ProfileHandler(dataStorage.userName)
-            .then((res) => {
-                console.log('res profile', res);
-                if (res.status === 200) {
-                    setProfileData(res.data);
-                }
-            })
-            .catch((err) => {
-                console.log('err profile', err);
-            });
-    };
+    const [queueData, setQueueData] = useState([]);
+
+    useEffect(() => {
+        GetQueueData();
+    }, []);
 
     const GetQueueData = () => {
         QueueHandler(dataStorage.loketID)
@@ -274,14 +244,6 @@ const Admin = () => {
                 audioRef.current.pause();
                 setIsPlaying(false);
             });
-    };
-
-    // const audio = audioArr[0];
-    const handlePlay = () => {
-        getCall();
-        setAudioIndex(0);
-        audioRef.current.play().catch((err) => console.log('err audio', err));
-        setIsPlaying(true);
     };
 
     const handlePause = () => {
@@ -380,7 +342,6 @@ const Admin = () => {
                                         style={{ display: 'none' }}
                                         ref={audioRef}
                                         src={audioArr[audioIndex]}
-                                        // src={VoiceList[0].path}
                                         onEnded={() => {
                                             setAudioIndex((i) => i + 1);
                                             if (
@@ -472,7 +433,6 @@ const Admin = () => {
                                             dateFormat='dd MMM'
                                             placeholderText={'1 Jan'}
                                             popperPlacement='bottom-end'
-                                            // inline
                                         ></DatePicker>
                                         <div>-</div>
                                         <DatePicker
@@ -486,7 +446,6 @@ const Admin = () => {
                                             dateFormat='dd MMM'
                                             placeholderText='31 Des'
                                             popperPlacement='bottom-end'
-                                            // disabled
                                         />
                                         {startDate !== '' || endDate !== '' ? (
                                             <IoMdClose
@@ -520,7 +479,6 @@ const Admin = () => {
                                 >
                                     <div
                                         className='button-yes-export'
-                                        // onClick={() => alert('export bos')}
                                         onClick={ExportFunction}
                                     >
                                         <FiDownload

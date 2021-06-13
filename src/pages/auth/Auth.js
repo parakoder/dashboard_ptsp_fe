@@ -1,17 +1,15 @@
 import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router';
-import { AppContext } from '../../services/context/Context';
 import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 import { FaChevronLeft } from 'react-icons/fa';
+import { AppContext } from '../../services/context/Context';
+import Button from '../../components/Button';
 import './auth.scss';
 import '../../styles/global.scss';
-import Button from '../../components/Button';
 
 const Auth = () => {
     const history = useHistory();
-    const { state, fun } = useContext(AppContext);
-
-    const { authState } = state;
+    const { fun } = useContext(AppContext);
     const { authContext } = fun;
 
     const [showHidePass, setShowHidePass] = useState(true);
@@ -213,15 +211,6 @@ const Auth = () => {
                         </Button>
                     </div>
                 )}
-                {/* <button
-                    onClick={() => {
-                        authContext.signIn().then((res) => {
-                            history.replace('/admin');
-                        });
-                    }}
-                >
-                    Login
-                </button> */}
             </div>
         </div>
     );
