@@ -7,7 +7,36 @@ import { GoPrimitiveDot } from 'react-icons/go';
 import './display.scss';
 
 const Dashboard = () => {
-    const [arrDisplay, setArrDisplay] = useState([]);
+    const [arrDisplay, setArrDisplay] = useState([
+        {
+            loket: 'E-Court',
+            antrian: '',
+        },
+        {
+            loket: 'Pengaduan & Informasi',
+            antrian: '',
+        },
+        {
+            loket: 'Kepaniteraan Hukum',
+            antrian: '',
+        },
+        {
+            loket: 'Kepaniteraan Pidana',
+            antrian: '',
+        },
+        {
+            loket: 'Upaya Hukum Perdata',
+            antrian: '',
+        },
+        {
+            loket: 'Salinan Putusan Perdata/Eksekusi',
+            antrian: '',
+        },
+        {
+            loket: 'Umum & Surat Masuk',
+            antrian: '',
+        },
+    ]);
     const [runningState, setRunningState] = useState([]);
 
     useEffect(() => {
@@ -17,7 +46,7 @@ const Dashboard = () => {
                 .then((res) => {
                     console.log('ress display', res);
                     if (res.status === 200) {
-                        setArrDisplay(res.data);
+                        // setArrDisplay(res.data);
                     }
                 })
                 .catch((err) => {

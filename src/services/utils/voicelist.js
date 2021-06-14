@@ -9,6 +9,25 @@ import voice8 from '../../assets/voice/8.mp3';
 import voice9 from '../../assets/voice/9.mp3';
 import voice10 from '../../assets/voice/10.mp3';
 import voice11 from '../../assets/voice/11.mp3';
+import voice12 from '../../assets/voice/12.mp3';
+import voice13 from '../../assets/voice/13.mp3';
+import voice14 from '../../assets/voice/14.mp3';
+import voice15 from '../../assets/voice/15.mp3';
+import voice16 from '../../assets/voice/16.mp3';
+import voice17 from '../../assets/voice/17.mp3';
+import voice18 from '../../assets/voice/18.mp3';
+import voice19 from '../../assets/voice/19.mp3';
+import voice20 from '../../assets/voice/20.mp3';
+import voice21 from '../../assets/voice/21.mp3';
+import voice22 from '../../assets/voice/22.mp3';
+import voice23 from '../../assets/voice/23.mp3';
+import voice24 from '../../assets/voice/24.mp3';
+import voice25 from '../../assets/voice/25.mp3';
+import voice26 from '../../assets/voice/26.mp3';
+import voice27 from '../../assets/voice/27.mp3';
+import voice28 from '../../assets/voice/28.mp3';
+import voice29 from '../../assets/voice/29.mp3';
+import voice30 from '../../assets/voice/30.mp3';
 import voiceA from '../../assets/voice/a.mp3';
 import voiceB from '../../assets/voice/b.mp3';
 import voiceC from '../../assets/voice/c.mp3';
@@ -75,6 +94,82 @@ export const VoiceList = [
     {
         name: '11',
         path: voice11,
+    },
+    {
+        name: '12',
+        path: voice12,
+    },
+    {
+        name: '13',
+        path: voice13,
+    },
+    {
+        name: '14',
+        path: voice14,
+    },
+    {
+        name: '15',
+        path: voice15,
+    },
+    {
+        name: '16',
+        path: voice16,
+    },
+    {
+        name: '17',
+        path: voice17,
+    },
+    {
+        name: '18',
+        path: voice18,
+    },
+    {
+        name: '19',
+        path: voice19,
+    },
+    {
+        name: '20',
+        path: voice20,
+    },
+    {
+        name: '21',
+        path: voice21,
+    },
+    {
+        name: '22',
+        path: voice22,
+    },
+    {
+        name: '23',
+        path: voice23,
+    },
+    {
+        name: '24',
+        path: voice24,
+    },
+    {
+        name: '25',
+        path: voice25,
+    },
+    {
+        name: '26',
+        path: voice26,
+    },
+    {
+        name: '27',
+        path: voice27,
+    },
+    {
+        name: '28',
+        path: voice28,
+    },
+    {
+        name: '29',
+        path: voice29,
+    },
+    {
+        name: '30',
+        path: voice30,
     },
     {
         name: 'A',

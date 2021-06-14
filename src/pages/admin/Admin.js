@@ -531,7 +531,7 @@ const Admin = () => {
                     </div>
                 </div>
                 <div className='content-table'>
-                    <div className='t18b'>Riwayat Pelayanan</div>
+                    <div className='t18b'>Riwayat Pelayanan Hari Ini</div>
                     <div style={{ height: 15 }} />
                     <TableContainer
                         component={Paper}
