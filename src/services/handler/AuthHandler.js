@@ -1,6 +1,4 @@
 import LoginApi from '../LoginApi';
-import base64 from 'base-64';
-import axios from 'axios';
 
 export const LoginHandler = async (username, password) => {
     var formData = new FormData();

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { HandlerAPI } from '../HandlerAPI';
 
 export const ProfileHandler = async (userName) => {
