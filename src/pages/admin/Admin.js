@@ -189,6 +189,8 @@ const Admin = () => {
         ) {
             ExportData(formattedStartDate, formattedEndDate)
                 .then((res) => {
+                    // if (res.status)
+                    console.log('res export', res);
                     const url = window.URL.createObjectURL(
                         new Blob([res.data])
                     );
@@ -558,10 +560,10 @@ const Admin = () => {
                                         Jam Dilayani
                                     </StyledTableCell>
                                     <StyledTableCell align='center'>
-                                        Lama Menunggu
+                                        Lama Menunggu (Menit)
                                     </StyledTableCell>
                                     <StyledTableCell align='center'>
-                                        Lama Pelayanan
+                                        Lama Pelayanan (Menit)
                                     </StyledTableCell>
                                 </TableRow>
                             </TableHead>
@@ -585,7 +587,14 @@ const Admin = () => {
                                                 {queue.jamKedatangan}
                                             </StyledTableCell>
                                             <StyledTableCell align='center'>
-                                                {queue.jamDilayani}
+                                                {moment(queue.jamDilayani)
+                                                    .utc()
+                                                    .format('hh:mm') ===
+                                                'Invalid date'
+                                                    ? '-'
+                                                    : moment(queue.jamDilayani)
+                                                          .utc()
+                                                          .format('HH:mm')}
                                             </StyledTableCell>
                                             <StyledTableCell align='center'>
                                                 {queue.lamaMenunggu}
