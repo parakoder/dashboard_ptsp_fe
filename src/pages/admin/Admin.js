@@ -165,7 +165,11 @@ const Admin = () => {
         QueueHandler(dataStorage.loketID)
             .then((res) => {
                 console.log('res queue', res);
-                setQueueData(res.data);
+                if (res.data === null) {
+                    setQueueData([]);
+                } else {
+                    setQueueData(res.data);
+                }
             })
             .catch((err) => {
                 console.log('err queue', err);
@@ -228,22 +232,26 @@ const Admin = () => {
                 if (res.status === 200) {
                     setAudioIndex(0);
 
-                    res.data.map((data) => {
-                        console.log('dataaaa mp3', data);
-                        // let item = `/public/voice/${data}.mp3`;
-                        let item = VoiceList.find((o) => o.name === data);
-                        console.log('itemm', item);
-                        if (item !== undefined) {
-                            return arrVoice.push(item.path);
+                    if (res.panggil === true) {
+                        res.data.map((data) => {
+                            // console.log('dataaaa mp3', data);
+                            // let item = `/public/voice/${data}.mp3`;
+                            let item = VoiceList.find((o) => o.name === data);
+                            // console.log('itemm', item);
+                            if (item !== undefined) {
+                                return arrVoice.push(item.path);
+                            }
+                        });
+                        // console.log('arrVoice', arrVoice);
+                        setAudioArr(arrVoice);
+                        audioRef.current.play();
+                        if (
+                            audioRef.current.duration === 0 &&
+                            !audioRef.current.paused
+                        ) {
+                            setIsPlaying(false);
                         }
-                    });
-                    console.log('arrVoice', arrVoice);
-                    setAudioArr(arrVoice);
-                    audioRef.current.play();
-                    if (
-                        audioRef.current.duration === 0 &&
-                        !audioRef.current.paused
-                    ) {
+                    } else {
                         setIsPlaying(false);
                     }
                 }
@@ -618,6 +626,9 @@ const Admin = () => {
                             </TableBody>
                         </Table>
                     </TableContainer>
+                    {queueData.length === 0 || queueData === null ? (
+                        <div className='nodata-table'>Tidak Ada Data</div>
+                    ) : null}
                 </div>
             </div>
         </div>

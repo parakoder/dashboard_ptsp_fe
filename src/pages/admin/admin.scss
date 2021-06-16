@@ -188,6 +188,14 @@
         .content-table {
             margin: 0px 40px 0px 40px;
             height: 100%;
+
+            .nodata-table {
+                height: 200px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: 1px solid $primaryDark;
+            }
         }
     }
 }
