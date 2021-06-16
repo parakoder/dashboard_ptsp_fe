@@ -46,6 +46,8 @@ import voiceO from '../../assets/voice/o.mp3';
 import voiceP from '../../assets/voice/p.mp3';
 import voiceBelas from '../../assets/voice/belas.mp3';
 import voiceBell from '../../assets/voice/bell.mp3';
+import voiceBellStart from '../../assets/voice/bell-start.mp3';
+import voiceBellEnd from '../../assets/voice/bell-end.mp3';
 import voiceDiloket from '../../assets/voice/diloket.mp3';
 import voiceNomorAntrian from '../../assets/voice/nomorantrian.mp3';
 import voicePuluh from '../../assets/voice/puluh.mp3';
@@ -242,6 +244,14 @@ export const VoiceList = [
     {
         name: 'bell',
         path: voiceBell,
+    },
+    {
+        name: 'bell-start',
+        path: voiceBellStart,
+    },
+    {
+        name: 'bell-end',
+        path: voiceBellEnd,
     },
     {
         name: 'diloket',
