@@ -90,17 +90,18 @@ const Admin = () => {
     const [formattedStartDate, setFormattedStartDate] = useState('');
     const [formattedEndDate, setFormattedEndDate] = useState('');
 
-    const onChange = (dates) => {
-        const [start, end] = dates;
+    const onChangeDate = (type, date) => {
+        // const [start, end] = dates;
 
-        var formatStart = moment(start).format('yyyy-MM-DD').toString();
-        var formatEnd = moment(end).format('yyyy-MM-DD').toString();
-
-        setFormattedStartDate(formatStart);
-        setFormattedEndDate(formatEnd);
-
-        setStartDate(start);
-        setEndDate(end);
+        if (type === 'startDate') {
+            var formatStart = moment(date).format('yyyy-MM-DD').toString();
+            setFormattedStartDate(formatStart);
+            setStartDate(date);
+        } else {
+            var formatEnd = moment(date).format('yyyy-MM-DD').toString();
+            setFormattedEndDate(formatEnd);
+            setEndDate(date);
+        }
     };
 
     const onClearFilter = () => {
@@ -175,17 +176,23 @@ const Admin = () => {
 
     const ExportFunction = () => {
         if (formattedStartDate === '' || formattedEndDate === '') {
-            alert('Tanggal tidak boleh kosong');
+            alert('Mohon isi Tanggal');
         }
 
         if (fileNameExport.length === 0) {
             alert('Mohon isi nama file');
         }
 
+        if (startDate === '' || endDate === '') {
+            alert('Mohon isi Tanggal');
+        }
+
         if (
             fileNameExport.length > 0 &&
             formattedStartDate !== '' &&
-            formattedEndDate !== ''
+            formattedEndDate !== '' &&
+            startDate !== '' &&
+            endDate !== ''
         ) {
             ExportData(formattedStartDate, formattedEndDate)
                 .then((res) => {
@@ -428,10 +435,12 @@ const Admin = () => {
                                             className='filter-date'
                                             monthsShown={2}
                                             selected={startDate}
-                                            onChange={onChange}
-                                            startDate={startDate}
-                                            endDate={endDate}
-                                            selectsRange
+                                            onChange={(date) =>
+                                                onChangeDate('startDate', date)
+                                            }
+                                            // startDate={startDate}
+                                            // endDate={endDate}
+                                            // selectsRange
                                             dateFormat='dd MMM'
                                             placeholderText={'1 Jan'}
                                             popperPlacement='bottom-end'
@@ -441,10 +450,12 @@ const Admin = () => {
                                             className='filter-date'
                                             monthsShown={2}
                                             selected={endDate}
-                                            onChange={onChange}
-                                            startDate={startDate}
-                                            endDate={endDate}
-                                            selectsRange
+                                            onChange={(date) =>
+                                                onChangeDate('endDate', date)
+                                            }
+                                            // startDate={startDate}
+                                            // endDate={endDate}
+                                            // selectsRange
                                             dateFormat='dd MMM'
                                             placeholderText='31 Des'
                                             popperPlacement='bottom-end'
