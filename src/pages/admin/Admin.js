@@ -229,31 +229,31 @@ const Admin = () => {
             .then((res) => {
                 console.log('res call', res);
                 let arrVoice = [];
-                if (res.status === 200) {
+                if (res.status === 200 && res.panggil === true) {
                     setAudioIndex(0);
 
-                    if (res.panggil === true) {
-                        res.data.map((data) => {
-                            // console.log('dataaaa mp3', data);
-                            // let item = `/public/voice/${data}.mp3`;
-                            let item = VoiceList.find((o) => o.name === data);
-                            // console.log('itemm', item);
-                            if (item !== undefined) {
-                                return arrVoice.push(item.path);
-                            }
-                        });
-                        // console.log('arrVoice', arrVoice);
-                        setAudioArr(arrVoice);
-                        audioRef.current.play();
-                        if (
-                            audioRef.current.duration === 0 &&
-                            !audioRef.current.paused
-                        ) {
-                            setIsPlaying(false);
+                    res.data.map((data) => {
+                        // console.log('dataaaa mp3', data);
+                        // let item = `/public/voice/${data}.mp3`;
+                        let item = VoiceList.find((o) => o.name === data);
+                        // console.log('itemm', item);
+                        if (item !== undefined) {
+                            return arrVoice.push(item.path);
                         }
-                    } else {
-                        setIsPlaying(false);
-                    }
+                    });
+                    // console.log('arrVoice', arrVoice);
+                    setAudioArr(arrVoice);
+                    audioRef.current.play();
+                    // if (
+                    //     audioRef.current.duration === 0 &&
+                    //     !audioRef.current.paused
+                    // ) {
+                    //     setIsPlaying(false);
+                    // }
+                } else {
+                    setAudioArr([]);
+                    setIsPlaying(false);
+                    audioRef.current.pause();
                 }
             })
             .catch((err) => {
