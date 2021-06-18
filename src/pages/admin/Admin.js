@@ -346,7 +346,7 @@ const Admin = () => {
                                 </div>
                             </div>
                             <div className='card-info'>
-                                <div className='t18b'>Kode Antrean Online</div>
+                                <div className='t18b'>Kode Antrian Online</div>
                                 <div style={{ height: 18 }} />
                                 <div className='card-loket'>
                                     {cardData && cardData.noAntrian}
@@ -394,7 +394,7 @@ const Admin = () => {
                             </div>
                             <div className='card-info'>
                                 <div className='t18b' style={{ opacity: 0.5 }}>
-                                    Kode Antrean Manual
+                                    Kode Antrian Manual
                                 </div>
                                 <div style={{ height: 18 }} />
                                 <div className='card-loket-disabled'>J 80</div>
