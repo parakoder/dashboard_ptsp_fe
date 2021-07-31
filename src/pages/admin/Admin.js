@@ -393,16 +393,22 @@ const Admin = () => {
                                 </div>
                             </div>
                             <div className='card-info'>
-                                <div className='t18b' style={{ opacity: 0.5 }}>
-                                    Kode Antrian Manual
-                                </div>
+                                <div className='t18b'>Kode Antrian Manual</div>
                                 <div style={{ height: 18 }} />
-                                <div className='card-loket-disabled'>J 80</div>
+                                <div className='card-loket'>J 80</div>
                                 <div className='content-cards-1-footer'>
-                                    <Button className='button-control-admin-disabled'>
+                                    <Button
+                                        className='button-control-admin'
+                                        onClick={() => alert('Panggil Manual')}
+                                    >
                                         Panggil
                                     </Button>
-                                    <Button className='button-control-admin-disabled'>
+                                    <Button
+                                        className='button-control-admin'
+                                        onClick={() =>
+                                            alert('Selanjutnya Manual')
+                                        }
+                                    >
                                         Selanjutnya
                                     </Button>
                                 </div>
