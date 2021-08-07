@@ -23,7 +23,12 @@ import { CardHandler } from '../../services/handler/CardHandler';
 import { ProfileHandler } from '../../services/handler/ProfileHandler';
 import { QueueHandler } from '../../services/handler/QueueHandler';
 import { ExportData } from '../../services/handler/ExportHandler';
-import { CallHandler, NextHandler } from '../../services/handler/ButtonHandler';
+import {
+    CallHandler,
+    NextHandler,
+    CallOfflineHandler,
+    NextOfflineHandler,
+} from '../../services/handler/ButtonHandler';
 import { VoiceList } from '../../services/utils/voicelist';
 
 const StyledTableCell = withStyles((theme) => ({
@@ -62,6 +67,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Admin = () => {
     const audioRef = useRef(null);
+    const audioOfflineRef = useRef(null);
     const classes = useStyles();
     const { state, fun } = useContext(AppContext);
     const { authContext } = fun;
@@ -236,7 +242,6 @@ const Admin = () => {
                         // console.log('dataaaa mp3', data);
                         // let item = `/public/voice/${data}.mp3`;
                         let item = VoiceList.find((o) => o.name === data);
-                        // console.log('itemm', item);
                         if (item !== undefined) {
                             return arrVoice.push(item.path);
                         }
@@ -244,12 +249,6 @@ const Admin = () => {
                     // console.log('arrVoice', arrVoice);
                     setAudioArr(arrVoice);
                     audioRef.current.play();
-                    // if (
-                    //     audioRef.current.duration === 0 &&
-                    //     !audioRef.current.paused
-                    // ) {
-                    //     setIsPlaying(false);
-                    // }
                 } else {
                     setAudioArr([]);
                     setIsPlaying(false);
@@ -269,8 +268,67 @@ const Admin = () => {
         setIsPlaying(false);
     };
 
+    const [audioOfflineIndex, setAudioOfflineIndex] = useState(0);
+    const [isPlayingOffline, setIsPlayingOffline] = useState(false);
+
+    const [audioOfflineArr, setAudioOfflineArr] = useState([]);
+
+    const getCallOffline = () => {
+        setIsPlayingOffline(true);
+        CallOfflineHandler(dataStorage.loketID)
+            .then((res) => {
+                console.log('res call', res);
+                let arrVoice = [];
+                if (res.status === 200 && res.panggil === true) {
+                    setAudioOfflineIndex(0);
+
+                    res.data.map((data) => {
+                        // console.log('dataaaa mp3', data);
+                        // let item = `/public/voice/${data}.mp3`;
+                        let item = VoiceList.find((o) => o.name === data);
+                        if (item !== undefined) {
+                            return arrVoice.push(item.path);
+                        }
+                    });
+                    // console.log('arrVoice', arrVoice);
+                    setAudioOfflineArr(arrVoice);
+                    audioOfflineRef.current.play();
+                } else {
+                    setAudioOfflineArr([]);
+                    setIsPlayingOffline(false);
+                    audioOfflineRef.current.pause();
+                }
+            })
+            .catch((err) => {
+                console.log('err call', err);
+                audioOfflineRef.current.pause();
+                setIsPlayingOffline(false);
+            });
+    };
+
+    const handlePauseOffline = () => {
+        audioOfflineRef.current.pause();
+
+        setIsPlayingOffline(false);
+    };
+
     const nextHandler = () => {
         NextHandler(dataStorage.loketID)
+            .then((res) => {
+                console.log('res next', res);
+                if (res.status === 200) {
+                    GetCardData();
+                    GetProfileData();
+                    GetQueueData();
+                }
+            })
+            .catch((err) => {
+                console.log('error next', err);
+            });
+    };
+
+    const nextOfflineHandler = () => {
+        NextOfflineHandler(dataStorage.loketID)
             .then((res) => {
                 console.log('res next', res);
                 if (res.status === 200) {
@@ -395,19 +453,45 @@ const Admin = () => {
                             <div className='card-info'>
                                 <div className='t18b'>Kode Antrian Manual</div>
                                 <div style={{ height: 18 }} />
-                                <div className='card-loket'>J 80</div>
+                                <div className='card-loket'>
+                                    {cardData && cardData.noAntrian}
+                                </div>
                                 <div className='content-cards-1-footer'>
+                                    <audio
+                                        autoPlay
+                                        controls={true}
+                                        preload='auto'
+                                        style={{ display: 'none' }}
+                                        ref={audioOfflineRef}
+                                        src={audioOfflineArr[audioOfflineIndex]}
+                                        onEnded={() => {
+                                            setAudioOfflineIndex((i) => i + 1);
+                                            if (
+                                                audioOfflineIndex ===
+                                                audioOfflineArr.length - 1
+                                            ) {
+                                                setIsPlayingOffline(false);
+                                            }
+                                        }}
+                                    />
+                                    {isPlaying ? (
+                                        <Button
+                                            className='button-control-admin'
+                                            onClick={handlePauseOffline}
+                                        >
+                                            ||
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            className='button-control-admin'
+                                            onClick={getCallOffline}
+                                        >
+                                            Panggil
+                                        </Button>
+                                    )}
                                     <Button
                                         className='button-control-admin'
-                                        onClick={() => alert('Panggil Manual')}
-                                    >
-                                        Panggil
-                                    </Button>
-                                    <Button
-                                        className='button-control-admin'
-                                        onClick={() =>
-                                            alert('Selanjutnya Manual')
-                                        }
+                                        onClick={nextOfflineHandler}
                                     >
                                         Selanjutnya
                                     </Button>
