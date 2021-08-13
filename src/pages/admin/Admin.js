@@ -275,7 +275,7 @@ const Admin = () => {
 
     const getCallOffline = () => {
         setIsPlayingOffline(true);
-        CallOfflineHandler(dataStorage.loketID)
+        CallOfflineHandler(dataStorage.loketID + 7)
             .then((res) => {
                 console.log('res call', res);
                 let arrVoice = [];
@@ -328,7 +328,7 @@ const Admin = () => {
     };
 
     const nextOfflineHandler = () => {
-        NextOfflineHandler(dataStorage.loketID + 7)
+        NextOfflineHandler(dataStorage.loketID)
             .then((res) => {
                 console.log('res next', res);
                 if (res.status === 200) {
