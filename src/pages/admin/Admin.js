@@ -275,7 +275,7 @@ const Admin = () => {
 
     const getCallOffline = () => {
         setIsPlayingOffline(true);
-        CallOfflineHandler(dataStorage.loketID + 7)
+        CallOfflineHandler(dataStorage.loketID)
             .then((res) => {
                 console.log('res call', res);
                 let arrVoice = [];
