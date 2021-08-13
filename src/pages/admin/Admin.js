@@ -328,7 +328,7 @@ const Admin = () => {
     };
 
     const nextOfflineHandler = () => {
-        NextOfflineHandler(dataStorage.loketID)
+        NextOfflineHandler(dataStorage.loketID + 7)
             .then((res) => {
                 console.log('res next', res);
                 if (res.status === 200) {
