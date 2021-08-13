@@ -454,7 +454,7 @@ const Admin = () => {
                                 <div className='t18b'>Kode Antrian Manual</div>
                                 <div style={{ height: 18 }} />
                                 <div className='card-loket'>
-                                    {cardData && cardData.noAntrian}
+                                    {cardData && cardData.noAntrianOff}
                                 </div>
                                 <div className='content-cards-1-footer'>
                                     <audio
