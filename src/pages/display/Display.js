@@ -7,6 +7,7 @@ import {
     DisplayHandler,
 } from '../../services/handler/DisplayHandler';
 import { GoPrimitiveDot } from 'react-icons/go';
+import { VoiceList } from '../../services/utils/voicelist';
 import './display.scss';
 
 const Dashboard = () => {
@@ -28,11 +29,36 @@ const Dashboard = () => {
                     if (res.status === 200) {
                         CallDisplayHandler()
                             .then((resCall) => {
-                                console.log('resCall display', resCall);
-                                setArrDisplay(res.data);
+                                let arrVoice = [];
+                                if (
+                                    resCall.status === 200 &&
+                                    res.panggil === true
+                                ) {
+                                    console.log('resCall display', resCall);
+                                    setArrDisplay(res.data);
+                                    res.data.map((data) => {
+                                        // console.log('dataaaa mp3', data);
+                                        // let item = `/public/voice/${data}.mp3`;
+                                        let item = VoiceList.find(
+                                            (o) => o.name === data
+                                        );
+                                        if (item !== undefined) {
+                                            return arrVoice.push(item.path);
+                                        }
+                                    });
+                                    // console.log('arrVoice', arrVoice);
+                                    setAudioArr(arrVoice);
+                                    audioRef.current.play();
+                                } else {
+                                    setAudioArr([]);
+                                    setIsPlaying(false);
+                                    audioRef.current.pause();
+                                }
                             })
                             .catch((errCall) => {
                                 console.log('errCall display', errCall);
+                                audioRef.current.pause();
+                                setIsPlaying(false);
                             });
                     }
                 })
