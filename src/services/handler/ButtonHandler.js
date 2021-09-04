@@ -3,7 +3,8 @@ import { HandlerAPI } from '../HandlerAPI';
 export const CallHandler = async (idPelayanan) => {
     try {
         const response = await HandlerAPI(
-            `${process.env.REACT_APP_ROOT_API_ADMIN}/v1/api/antrian/call`,
+            // `${process.env.REACT_APP_ROOT_API_ADMIN}/v1/api/antrian/call`,
+            `${process.env.REACT_APP_ROOT_API_BRIDGE}/v1/api/antrian/call`,
             'get',
             { idPelayanan }
         );
@@ -16,7 +17,8 @@ export const CallHandler = async (idPelayanan) => {
 export const CallOfflineHandler = async (idPelayanan) => {
     try {
         const response = await HandlerAPI(
-            `${process.env.REACT_APP_ROOT_API_ADMIN}/v1/api/antrian/call-offline`,
+            // `${process.env.REACT_APP_ROOT_API_ADMIN}/v1/api/antrian/call-offline`,
+            `${process.env.REACT_APP_ROOT_API_BRIDGE}/v1/api/antrian/call-offline`,
             'get',
             { idPelayanan }
         );
