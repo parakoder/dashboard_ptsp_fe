@@ -1,14 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Marquee from 'react-fast-marquee';
 import Card from '../../components/Card';
 import { RunningHandler } from '../../services/handler/RunningTextHandler';
-import { DisplayHandler } from '../../services/handler/DisplayHandler';
+import {
+    CallDisplayHandler,
+    DisplayHandler,
+} from '../../services/handler/DisplayHandler';
 import { GoPrimitiveDot } from 'react-icons/go';
 import './display.scss';
 
 const Dashboard = () => {
+    const audioRef = useRef(null);
     const [arrDisplay, setArrDisplay] = useState([]);
     const [runningState, setRunningState] = useState([]);
+
+    const [audioIndex, setAudioIndex] = useState(0);
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    const [audioArr, setAudioArr] = useState([]);
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -17,7 +26,14 @@ const Dashboard = () => {
                 .then((res) => {
                     console.log('ress display', res);
                     if (res.status === 200) {
-                        setArrDisplay(res.data);
+                        CallDisplayHandler()
+                            .then((resCall) => {
+                                console.log('resCall display', resCall);
+                                setArrDisplay(res.data);
+                            })
+                            .catch((errCall) => {
+                                console.log('errCall display', errCall);
+                            });
                     }
                 })
                 .catch((err) => {
@@ -41,6 +57,12 @@ const Dashboard = () => {
             .catch((err) => console.log('err', err));
         return () => {};
     }, []);
+
+    const handlePause = () => {
+        audioRef.current.pause();
+
+        setIsPlaying(false);
+    };
 
     return (
         <div className='container-dashboard'>
@@ -113,6 +135,21 @@ const Dashboard = () => {
                 </Marquee>
             </div>
             {/* footer running text */}
+
+            <audio
+                autoPlay
+                controls={true}
+                preload='auto'
+                style={{ display: 'none' }}
+                ref={audioRef}
+                src={audioArr[audioIndex]}
+                onEnded={() => {
+                    setAudioIndex((i) => i + 1);
+                    if (audioIndex === audioArr.length - 1) {
+                        setIsPlaying(false);
+                    }
+                }}
+            />
         </div>
     );
 };
