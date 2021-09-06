@@ -30,13 +30,10 @@ const Dashboard = () => {
                         CallDisplayHandler()
                             .then((resCall) => {
                                 let arrVoice = [];
-                                if (
-                                    resCall.status === 200 &&
-                                    res.panggil === true
-                                ) {
+                                if (resCall.status === 200) {
                                     console.log('resCall display', resCall);
                                     setArrDisplay(res.data);
-                                    res.data.map((data) => {
+                                    resCall.data.map((data) => {
                                         // console.log('dataaaa mp3', data);
                                         // let item = `/public/voice/${data}.mp3`;
                                         let item = VoiceList.find(
