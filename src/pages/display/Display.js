@@ -16,6 +16,7 @@ const Dashboard = () => {
     const [runningState, setRunningState] = useState([]);
 
     const [audioIndex, setAudioIndex] = useState(0);
+    const [isPlaying, setIsPlaying] = useState(false);
 
     const [audioArr, setAudioArr] = useState([]);
 
@@ -33,25 +34,32 @@ const Dashboard = () => {
                     console.log('err display', err);
                 });
 
+            setIsPlaying(true);
             CallDisplayHandler()
                 .then((resCall) => {
                     let arrVoice = [];
+
                     if (resCall.status === 200) {
                         console.log('resCall display', resCall);
-                        resCall.data.map((data) => {
-                            // console.log('dataaaa mp3', data);
-                            // let item = `/public/voice/${data}.mp3`;
-                            let item = VoiceList.find((o) => o.name === data);
-                            if (item !== undefined) {
-                                return arrVoice.push(item.path);
-                            }
-                        });
-                        // console.log('arrVoice', arrVoice);
-                        setAudioArr(arrVoice);
-                        audioRef.current.play();
+                        setAudioIndex(0);
+                        if (audioRef.currentTime === 0) {
+                            resCall.data.map((data) => {
+                                // console.log('dataaaa mp3', data);
+                                // let item = `/public/voice/${data}.mp3`;
+                                let item = VoiceList.find(
+                                    (o) => o.name === data
+                                );
+                                if (item !== undefined) {
+                                    return arrVoice.push(item.path);
+                                }
+                            });
+                            // console.log('arrVoice', arrVoice);
+                            setAudioArr(arrVoice);
+                            audioRef.current.play();
+                        }
                     } else {
                         setAudioArr([]);
-
+                        setIsPlaying(false);
                         audioRef.current.pause();
                     }
                 })
@@ -80,6 +88,7 @@ const Dashboard = () => {
 
     const handlePause = () => {
         audioRef.current.pause();
+        setIsPlaying(false);
     };
 
     return (
@@ -176,7 +185,12 @@ const Dashboard = () => {
                 style={{ display: 'none' }}
                 ref={audioRef}
                 src={audioArr[audioIndex]}
-                onEnded={() => setAudioIndex((i) => i + 1)}
+                onEnded={() => {
+                    setAudioIndex((i) => i + 1);
+                    if (audioIndex === audioArr.length - 1) {
+                        setIsPlaying(false);
+                    }
+                }}
             />
         </div>
     );

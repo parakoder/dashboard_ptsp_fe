@@ -171,7 +171,7 @@ const Admin = () => {
         QueueHandler(dataStorage.loketID)
             .then((res) => {
                 console.log('res queue', res);
-                if (res.data === null) {
+                if (res.data === null || res.data.length === 0) {
                     setQueueData([]);
                 } else {
                     setQueueData(res.data);
@@ -179,6 +179,7 @@ const Admin = () => {
             })
             .catch((err) => {
                 console.log('err queue', err);
+                setQueueData([]);
             });
     };
 
