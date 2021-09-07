@@ -16,7 +16,6 @@ const Dashboard = () => {
     const [runningState, setRunningState] = useState([]);
 
     const [audioIndex, setAudioIndex] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(false);
 
     const [audioArr, setAudioArr] = useState([]);
 
@@ -28,38 +27,37 @@ const Dashboard = () => {
                     console.log('ress display', res);
                     if (res.status === 200) {
                         setArrDisplay(res.data);
-                        CallDisplayHandler()
-                            .then((resCall) => {
-                                let arrVoice = [];
-                                if (resCall.status === 200) {
-                                    console.log('resCall display', resCall);
-                                    resCall.data.map((data) => {
-                                        // console.log('dataaaa mp3', data);
-                                        // let item = `/public/voice/${data}.mp3`;
-                                        let item = VoiceList.find(
-                                            (o) => o.name === data
-                                        );
-                                        if (item !== undefined) {
-                                            return arrVoice.push(item.path);
-                                        }
-                                    });
-                                    // console.log('arrVoice', arrVoice);
-                                    setAudioArr(arrVoice);
-                                    audioRef.current.play();
-                                } else {
-                                    setAudioArr([]);
-                                    setIsPlaying(false);
-                                    audioRef.current.pause();
-                                }
-                            })
-                            .catch((errCall) => {
-                                console.log('errCall display', errCall);
-                                handlePause();
-                            });
                     }
                 })
                 .catch((err) => {
                     console.log('err display', err);
+                });
+
+            CallDisplayHandler()
+                .then((resCall) => {
+                    let arrVoice = [];
+                    if (resCall.status === 200) {
+                        console.log('resCall display', resCall);
+                        resCall.data.map((data) => {
+                            // console.log('dataaaa mp3', data);
+                            // let item = `/public/voice/${data}.mp3`;
+                            let item = VoiceList.find((o) => o.name === data);
+                            if (item !== undefined) {
+                                return arrVoice.push(item.path);
+                            }
+                        });
+                        // console.log('arrVoice', arrVoice);
+                        setAudioArr(arrVoice);
+                        audioRef.current.play();
+                    } else {
+                        setAudioArr([]);
+
+                        audioRef.current.pause();
+                    }
+                })
+                .catch((errCall) => {
+                    console.log('errCall display', errCall);
+                    handlePause();
                 });
         }, 2000);
 
@@ -82,8 +80,6 @@ const Dashboard = () => {
 
     const handlePause = () => {
         audioRef.current.pause();
-
-        setIsPlaying(false);
     };
 
     return (
@@ -180,12 +176,7 @@ const Dashboard = () => {
                 style={{ display: 'none' }}
                 ref={audioRef}
                 src={audioArr[audioIndex]}
-                onEnded={() => {
-                    setAudioIndex((i) => i + 1);
-                    if (audioIndex === audioArr.length - 1) {
-                        setIsPlaying(false);
-                    }
-                }}
+                onEnded={() => setAudioIndex((i) => i + 1)}
             />
         </div>
     );
