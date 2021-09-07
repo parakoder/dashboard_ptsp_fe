@@ -6,7 +6,7 @@
     height: 100%;
 
     .content-dashboard {
-        height: calc(100% - 75px);
+        height: calc(100% - 60px);
         background-color: #f5f5f5;
 
         .grid-card {
@@ -55,6 +55,14 @@
                     font-weight: bold;
                     border-left: 1px solid $primarySoft;
                 }
+            }
+
+            .loading-container {
+                display: flex;
+                flex: 1;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
             }
         }
 

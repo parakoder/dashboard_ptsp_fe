@@ -27,12 +27,12 @@ const Dashboard = () => {
                 .then((res) => {
                     console.log('ress display', res);
                     if (res.status === 200) {
+                        setArrDisplay(res.data);
                         CallDisplayHandler()
                             .then((resCall) => {
                                 let arrVoice = [];
                                 if (resCall.status === 200) {
                                     console.log('resCall display', resCall);
-                                    setArrDisplay(res.data);
                                     resCall.data.map((data) => {
                                         // console.log('dataaaa mp3', data);
                                         // let item = `/public/voice/${data}.mp3`;
@@ -54,8 +54,7 @@ const Dashboard = () => {
                             })
                             .catch((errCall) => {
                                 console.log('errCall display', errCall);
-                                audioRef.current.pause();
-                                setIsPlaying(false);
+                                handlePause();
                             });
                     }
                 })
@@ -92,7 +91,7 @@ const Dashboard = () => {
             {/* content dashboard */}
             <div className='content-dashboard'>
                 <div className='grid-card'>
-                    {arrDisplay &&
+                    {arrDisplay.length > 0 ? (
                         arrDisplay.map((item, i) => (
                             <>
                                 {i === 0 ? (
@@ -136,7 +135,22 @@ const Dashboard = () => {
                                     </Card>
                                 </div>
                             </>
-                        ))}
+                        ))
+                    ) : (
+                        <div className='loading-container'>
+                            <img
+                                src={
+                                    require('../../assets/img_logo.png').default
+                                }
+                                alt='logo.png'
+                                className='logo-img'
+                                style={{ height: 150 }}
+                            />
+                            <span style={{ fontWeight: '500', fontSize: 24 }}>
+                                Loading...
+                            </span>
+                        </div>
+                    )}
                 </div>
             </div>
             {/* content dashboard */}
