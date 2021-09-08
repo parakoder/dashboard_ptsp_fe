@@ -41,7 +41,7 @@ const Dashboard = () => {
 
                     if (resCall.status === 200) {
                         console.log('resCall display', resCall);
-                        setAudioIndex(0);
+                        // setAudioIndex(0);
                         if (audioRef.currentTime === 0) {
                             resCall.data.map((data) => {
                                 // console.log('dataaaa mp3', data);
