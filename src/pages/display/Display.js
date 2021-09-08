@@ -16,59 +16,66 @@ const Dashboard = () => {
     const [runningState, setRunningState] = useState([]);
 
     const [audioIndex, setAudioIndex] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(false);
 
     const [audioArr, setAudioArr] = useState([]);
 
     useEffect(() => {
         const intervalId = setInterval(() => {
             //assign interval to a variable to clear it.
-            DisplayHandler()
-                .then((res) => {
-                    console.log('ress display', res);
-                    if (res.status === 200) {
-                        setArrDisplay(res.data);
-                    }
-                })
-                .catch((err) => {
-                    console.log('err display', err);
-                });
 
-            setIsPlaying(true);
-            CallDisplayHandler()
-                .then((resCall) => {
-                    let arrVoice = [];
+            var x = document.getElementById('myAudio');
 
-                    if (resCall.status === 200) {
-                        console.log('resCall display', resCall);
-                        // setAudioIndex(0);
-                        // if (audioRef.currentTime === 0) {
-                        resCall.data.map((data) => {
-                            // console.log('dataaaa mp3', data);
-                            // let item = `/public/voice/${data}.mp3`;
-                            let item = VoiceList.find((o) => o.name === data);
-                            if (item !== undefined) {
-                                return arrVoice.push(item.path);
-                            }
-                        });
-                        // console.log('arrVoice', arrVoice);
-                        setAudioArr(arrVoice);
-                        audioRef.current.play();
+            if (x.paused) {
+                DisplayHandler()
+                    .then((res) => {
+                        console.log('ress display', res);
+                        if (res.status === 200) {
+                            setArrDisplay(res.data);
+                        }
+                    })
+                    .catch((err) => {
+                        console.log('err display', err);
+                    });
+                CallDisplayHandler()
+                    .then((resCall) => {
+                        let arrVoice = [];
+
+                        if (
+                            resCall.status === 200 &&
+                            resCall.panggil === true
+                        ) {
+                            console.log('resCall display', resCall);
+                            resCall.data.map((data) => {
+                                // console.log('dataaaa mp3', data);
+                                // let item = `/public/voice/${data}.mp3`;
+                                let item = VoiceList.find(
+                                    (o) => o.name === data
+                                );
+                                if (item !== undefined) {
+                                    return arrVoice.push(item.path);
+                                }
+                            });
+                            console.log('arrVoice', arrVoice);
+                            setAudioArr(arrVoice);
+                            audioRef.current.play();
+                        }
+                        // else {
+                        //     setAudioArr([]);
+                        //     setIsPlaying(false);
+                        //     audioRef.current.pause();
                         // }
-                    } else {
-                        setAudioArr([]);
-                        setIsPlaying(false);
-                        audioRef.current.pause();
-                    }
-                })
-                .catch((errCall) => {
-                    console.log('errCall display', errCall);
-                    handlePause();
-                });
+                    })
+                    .catch((errCall) => {
+                        console.log('errCall display', errCall);
+                        handlePause();
+                    });
+            }
         }, 2000);
 
         return () => clearInterval(intervalId); //This is important
     }, []);
+
+    // console.log('xxx', x.paused);
 
     useEffect(() => {
         RunningHandler()
@@ -86,7 +93,6 @@ const Dashboard = () => {
 
     const handlePause = () => {
         audioRef.current.pause();
-        setIsPlaying(false);
     };
 
     return (
@@ -177,7 +183,8 @@ const Dashboard = () => {
             {/* footer running text */}
 
             <audio
-                autoPlay
+                id='myAudio'
+                autoPlay={true}
                 controls={true}
                 preload='auto'
                 style={{ display: 'none' }}
@@ -185,9 +192,11 @@ const Dashboard = () => {
                 src={audioArr[audioIndex]}
                 onEnded={() => {
                     setAudioIndex((i) => i + 1);
-                    // if (audioIndex === audioArr.length - 1) {
-                    //     setIsPlaying(false);
-                    // }
+                    if (audioIndex === audioArr.length - 1) {
+                        setAudioIndex(0);
+                        setAudioArr([]);
+                        audioRef.current.pause();
+                    }
                 }}
             />
         </div>
