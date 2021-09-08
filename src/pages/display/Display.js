@@ -41,22 +41,20 @@ const Dashboard = () => {
 
                     if (resCall.status === 200) {
                         console.log('resCall display', resCall);
-                        // setAudioIndex(0);
-                        if (audioRef.currentTime === 0) {
-                            resCall.data.map((data) => {
-                                // console.log('dataaaa mp3', data);
-                                // let item = `/public/voice/${data}.mp3`;
-                                let item = VoiceList.find(
-                                    (o) => o.name === data
-                                );
-                                if (item !== undefined) {
-                                    return arrVoice.push(item.path);
-                                }
-                            });
-                            // console.log('arrVoice', arrVoice);
-                            setAudioArr(arrVoice);
-                            audioRef.current.play();
-                        }
+                        setAudioIndex(0);
+                        // if (audioRef.currentTime === 0) {
+                        resCall.data.map((data) => {
+                            // console.log('dataaaa mp3', data);
+                            // let item = `/public/voice/${data}.mp3`;
+                            let item = VoiceList.find((o) => o.name === data);
+                            if (item !== undefined) {
+                                return arrVoice.push(item.path);
+                            }
+                        });
+                        // console.log('arrVoice', arrVoice);
+                        setAudioArr(arrVoice);
+                        audioRef.current.play();
+                        // }
                     } else {
                         setAudioArr([]);
                         setIsPlaying(false);
